@@ -20,5 +20,8 @@ This Tool is easy to use or at least thats the point.
         2. You Can Modify it via scaffolding or in the actual ui.
 
     
-
+2. TO complie and run just run
+    a. Configure your Datasource
+    b. run grails run-app or grails war
+   
 
