@@ -1,4 +1,4 @@
-partyPlanner
+Party Planner
 ============
 
 A tool for managing guest and seating arrangments.
