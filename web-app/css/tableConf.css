@@ -1,0 +1,104 @@
+.guestTableLayout {
+	height: 860px;
+	border:1px solid black;
+}
+
+.guestTableLayout > div {
+	float:left;
+	height:850px;
+	width: 770px;
+	overflow:scroll; 
+}
+
+
+
+.guestTableLayout > div:FIRST-CHILD {
+	float:left;
+	width:250px;
+}
+
+.table {
+	min-height:100px;
+	width:250px;
+	border:1px solid black;	
+	margin: 3px;
+	
+}
+
+.table .header > div, .seat .header > span{
+	float:right;
+	margin-right:5px;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.table .header > div:FIRST-CHILD, .seat .header > div{
+	float:left;
+	margin:0px;	
+}
+
+
+
+.table .header > div > span {
+	display:inline-block;
+}
+
+.table .header > div > span span.ui-icon-circle-plus {
+	display:inline-block;
+	white-space: nowrap;
+}
+
+.table .header > div > span:LAST-CHILD {
+	padding-right:4px
+}
+
+.table .seat{
+	height:40px;
+	border:1px solid black;	
+	margin: 3px;
+}
+
+.table .seat > div:LAST-CHILD, #guestList > div{
+	background-color:grey;
+	border: 1px solid black;
+	cursor: pointer;
+	color:white;
+}
+
+.icon-only-holder {
+	width:16px;
+}
+
+.delete-user, .edit-user {
+	float: right;
+}
+
+#dialogs {
+	display:none;
+}
+
+.clear {
+	clear:both !important;
+	width:1px !important;
+	height:1px !important;
+	margin:0px !important;
+	paddng:0px !important;
+	border:0px !important;
+}
+
+#guestListFiliters {
+	padding:5px 2px;
+}
+
+#guestListFiliters > span{
+	cursor: pointer;
+}
+
+#guestListFiliters > span span:first-child{
+	display:inline-block;
+	vertical-align: middle;
+}
+
+#guestListFiliters > span span:last-child{
+	padding-right: 5px;
+}
