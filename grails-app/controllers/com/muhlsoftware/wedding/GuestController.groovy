@@ -19,6 +19,9 @@ package com.muhlsoftware.wedding
 
 import org.springframework.dao.DataIntegrityViolationException
 
+import grails.plugins.springsecurity.Secured
+
+@Secured(['ROLE_ADMIN'])
 class GuestController {
 
 	static scaffold = true

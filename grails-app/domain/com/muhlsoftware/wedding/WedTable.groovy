@@ -34,6 +34,7 @@ class WedTable implements Serializable{
 		cache true
 		id generator: 'hilo',
 		   params: [table: 'hi_value', column: 'next_value', max_lo: 1]
+		seats sort: 'seatNumber', order: 'asc'
 	}
    
    static hasMany = [seats:Seat]

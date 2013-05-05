@@ -17,6 +17,8 @@
 ***********************************************************************************/
 package com.muhlsoftware.wedding
 
+import grails.plugins.springsecurity.Secured
+@Secured(['ROLE_ADMIN'])
 class SeatController {
 	static scaffold = true
     def index() { redirect(action:list) }

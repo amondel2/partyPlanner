@@ -60,7 +60,14 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.5"
-
+		compile ":spring-security-core:1.2.7.3"
+		compile ":spring-security-acl:1.1.1"
+		compile ":spring-security-appinfo:1.0"
+		compile ":spring-security-ui:0.2"
+		compile ":mail:1.0.1"
+		compile ":jquery-ui:1.8.24" //for spring security ( I am using 1.10.x in the app)
+		runtime ":jquery:1.8.3"  //for spring security ( I am using 2.x in the app)
+		compile ":famfamfam:1.0.1"
         build ":tomcat:$grailsVersion"
 
         runtime ":database-migration:1.3.2"

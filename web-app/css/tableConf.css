@@ -6,7 +6,7 @@
 .guestTableLayout > div {
 	float:left;
 	height:850px;
-	width: 770px;
+	width: 845px;
 	overflow:scroll; 
 }
 
@@ -14,12 +14,12 @@
 
 .guestTableLayout > div:FIRST-CHILD {
 	float:left;
-	width:250px;
+	width:275px;
 }
 
 .table {
 	min-height:100px;
-	width:250px;
+	width:275px;
 	border:1px solid black;	
 	margin: 3px;
 	

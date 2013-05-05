@@ -18,7 +18,9 @@
 package com.muhlsoftware.wedding
 import org.codehaus.groovy.grails.commons.GrailsClassUtils
 import org.junit.internal.runners.statements.FailOnTimeout;
+import grails.plugins.springsecurity.Secured
 
+@Secured(['ROLE_ADMIN','ROLE_USER'])
 class TableConfController {
 
     def index() { 

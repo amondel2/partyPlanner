@@ -69,6 +69,7 @@ environments {
     }
 }
 
+
 // log4j configuration
 log4j = {
     // Example of changing the log pattern for the default console appender:
@@ -89,3 +90,23 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.muhlsoftware.wedding.User'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.muhlsoftware.wedding.UserRole'
+grails.plugins.springsecurity.authority.className = 'com.muhlsoftware.wedding.Role'
+grails.plugins.springsecurity.successHandler.defaultTargetUrl = "/tableConf/"
+grails.plugins.springsecurity.controllerAnnotations.staticRules = [
+	'/securityInfo/**': ['ROLE_ADMIN'],
+	'/role/**': ['ROLE_ADMIN'],
+	'/aclclass/**': ['ROLE_ADMIN'],
+	'/aclentry/**': ['ROLE_ADMIN'],
+	'/aclobjectidentity/**': ['ROLE_ADMIN'], 
+	'/aclSid/**': ['ROLE_ADMIN'],
+	'/persistentLogin/**': ['ROLE_ADMIN'],
+	'/register/**': ['ROLE_ADMIN'],
+	'/registrationCode/**': ['ROLE_ADMIN'],
+	'/dbdoc/**': ['ROLE_ADMIN'],
+	'/requestmap/**': ['ROLE_ADMIN'],
+	'/user/**': ['ROLE_ADMIN']
+ ]

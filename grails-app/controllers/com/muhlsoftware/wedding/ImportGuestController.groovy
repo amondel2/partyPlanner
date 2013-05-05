@@ -16,12 +16,14 @@
 	along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.txt.
 ***********************************************************************************/
 package com.muhlsoftware.wedding
+import grails.plugins.springsecurity.Secured
 
 class ImportGuestController {
 
+	@Secured(['ROLE_ADMIN'])
 	def index() { render(view:"import") }
 
-
+	@Secured(['ROLE_ADMIN'])
 	def upload() {
 		def pp = params
 		def p = request.getFile('excel')

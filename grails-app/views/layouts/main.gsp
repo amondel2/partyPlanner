@@ -15,10 +15,21 @@
 		<g:javascript src="jquery-ui.js"/>
 		<g:layoutHead/>
 		<r:layoutResources />
+		<style type='text/css' media='screen'>
+			.nav a.admin {
+   				background-image: url('${fam.icon(name: 'user_suit')}');
+			}
+			.nav a.guests {
+				background-image: url('${fam.icon(name: 'group')}');
+			}
+			.nav a.partyTime {
+				background-image: url('${fam.icon(name: 'music')}');
+			}
+		</style>
 	</head>
 	<body>
 		<g:layoutBody/>
-		<div class="footer" role="contentinfo">Copywrite 2011</div>
+		<div class="footer" role="contentinfo">Copyright © 2012-<g:formatDate format="yyyy"/> Muhlsoftware, LLC</div>
 		<r:layoutResources />
 	</body>
 </html>

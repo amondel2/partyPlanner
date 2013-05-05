@@ -40,8 +40,8 @@ body {
 	background: #ffffff;
 	color: #333333;
 	margin: 0 auto;
-	max-width: 1024px;
-	min-width:1024px;
+	max-width: 1124px;
+	min-width:1124px;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
 	   -moz-box-shadow: 0 0 0.3em #255b17;
 	-webkit-box-shadow: 0 0 0.3em #255b17;
@@ -185,14 +185,26 @@ img {
 	text-decoration: underline;
 }
 
-.nav a.home, .nav a.list, .nav a.create {
+.nav a.home, .nav a.list, .nav a.create,.nav a.admin,.nav a.seat,.nav a.tables,.nav a.guests,.nav a.partyTime  {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
 }
 
+.nav a.tables {
+	background-position: 0.1em center;
+}
+
 .nav a.home {
 	background-image: url(../images/skin/house.png);
+}
+
+.nav a.tables {
+	background-image: url(../images/skin/happy-table-icon.png);
+}
+
+.nav a.seat {
+	background-image: url(../images/skin/Wood-Chair-icon.png);
 }
 
 .nav a.list {
