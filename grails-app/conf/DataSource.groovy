@@ -1,9 +1,6 @@
 dataSource {
     pooled = true
     driverClassName = "com.mysql.jdbc.Driver"
-//    driverClassName = "org.postgresql.Driver"
- 
-//	dialect = org.hibernate.dialect.PostgreSQLDialect
 }
 hibernate {
     cache.use_second_level_cache = false
@@ -38,8 +35,7 @@ environments {
     production {
         dataSource {
             dbCreate = "create"
-            url = "jdbc:mysql://<fakse_stuff>?autoreconnect=true"
-            pooled = true
+            url = "jdbc:mysql://<fakse_stuff>?autoreconnect=true"            pooled = true
             properties {
                maxActive = -1
                minEvictableIdleTimeMillis=1800000
