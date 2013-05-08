@@ -49,7 +49,6 @@ class ImportGuestController {
 					def isupdate = false
 					if(!g) {
 						g = new Guest()
-//						g.id= Guest.count() + 1
 						isupdate = true
 					}
 					item.eachWithIndex { itemObj, i ->

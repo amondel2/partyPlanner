@@ -29,6 +29,7 @@
 						<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 					</g:if>
 					<li><a class="admin" href="${createLink(uri: '/user/')}"><g:message code="default.admin.label"/></a></li>
+					<li><a class="guests" href="${createLink(uri: '/importGuest/')}">Import</a></li>
 					<li><a class="guests" href="${createLink(uri: '/guest/')}">Guest</a></li>
 					<li><a class="seat" href="${createLink(uri: '/seat/')}">Seats</a></li>
 					<li><a class="tables" href="${createLink(uri: '/webTable/')}">Tables</a></li>

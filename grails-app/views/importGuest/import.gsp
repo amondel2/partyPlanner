@@ -24,6 +24,7 @@
 		<title>Import Sheet</title>
 	</head>
 	<body>
+		<g:render template="../layouts/navMenu" />
 		<div>${msg}</div>
 		<form action="upload" method="POST" enctype="multipart/form-data">
 		 Choose An Excel File of Guest To Upload <input type="file" name="excel" id="excel">
