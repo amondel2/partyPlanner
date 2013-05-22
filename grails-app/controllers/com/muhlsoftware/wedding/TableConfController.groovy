@@ -140,7 +140,7 @@ class TableConfController {
 	def addSeat() {
 		def table = WedTable.findById(params?.tableId)
 		def s = new Seat()
-		def seats = table?.seats?.sort{a,b -> a.seatNumber > b.seatNumber ? 0 : 1 }
+		def seats = table?.seats?.sort{b,a -> a.seatNumber <=> b.seatNumber}
 		s.seatNumber = seats?.get(0)?.seatNumber + 1 ?: 1
 		s.wedTable = table
 		s.save(flush:true,failOnError:true)
