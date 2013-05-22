@@ -32,7 +32,7 @@
 					<li><a class="guests" href="${createLink(uri: '/importGuest/')}">Import</a></li>
 					<li><a class="guests" href="${createLink(uri: '/guest/')}">Guest</a></li>
 					<li><a class="seat" href="${createLink(uri: '/seat/')}">Seats</a></li>
-					<li><a class="tables" href="${createLink(uri: '/webTable/')}">Tables</a></li>
+					<li><a class="tables" href="${createLink(uri: '/wedTable/')}">Tables</a></li>
 				</ul>
 			</sec:ifAllGranted>
 			<div style="float:right;margin-right:5px;">
