@@ -1,7 +1,9 @@
 Party Planner
 ============
 
-A tool for managing guest and seating arrangments.
+A tool for managing guest and seating arrangments.  Please see the wiki as I am making this code work with multiple parties that you
+can create over time so you can having a living list of guest and a bank of guest that don't need to be at every party.  Its going to take a little while as many fields need to be moved.
+
 
 This Tool is easy to use or at least thats the point.
 
