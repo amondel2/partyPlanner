@@ -1,8 +1,9 @@
 Party Planner
 ============
 
-A tool for managing guest and seating arrangments.  Please see the wiki as I am making this code work with multiple parties that you
-can create over time so you can having a living list of guest and a bank of guest that don't need to be at every party.  Its going to take a little while as many fields need to be moved.
+A tool for managing guest and seating arrangments for multiple parties. 
+I made so major changes in the 2.0 release to support multiple parties..the first version 2.0.  I will be using it so if I find any bugs I will try and fix them.
+
 
 
 This Tool is easy to use or at least thats the point.
@@ -24,8 +25,10 @@ This Tool is easy to use or at least thats the point.
     
 2. TO complie and run just run
 
-    a. Configure your Datasource
+    a.  This tool is currently running against grail 2.2.3 and jquery 2.0.3 so no support for crappy old ie.
+    
+    b. Configure your Datasource
 
-    b. run grails run-app or grails war (see http://grails.org/doc/2.2.1/ref/Command%20Line/war.html)
+    c. run grails run-app or grails war (see http://grails.org/doc/2.2.3/ref/Command%20Line/war.html)
    
 
