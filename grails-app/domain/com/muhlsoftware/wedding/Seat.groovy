@@ -23,8 +23,9 @@ class Seat implements Serializable {
 
     static constraints = {
 		seatNumber(nullable:false,unique:['wedTable'])
-		guest(nullable:true)
+		partyGuest(nullable:true)
 		wedTable(nullable:false)
+		
     }
 	
 	static mapping = {
@@ -37,10 +38,10 @@ class Seat implements Serializable {
 	}
 	
 	
-	static belongsTo = [wedTable:WedTable,guest:Guest]
+	static belongsTo = [wedTable:WedTable,partyGuest:PartyGuest]
 	
 	Long id
-	Guest guest
+	PartyGuest partyGuest
 	Integer seatNumber
 	WedTable wedTable
 	

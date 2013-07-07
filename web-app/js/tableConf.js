@@ -36,6 +36,14 @@ function showAllGuest(){
 	$("#guestList > div").css("display","block");
 }
 
+function quickCounts(){
+	$("#invitedCount").text($("div[guest]").length);
+	$("#attendingCount").text($("div[attending]").length);
+	
+}
+
+
+
 var sortList = function(){
 	$.ajax({
 		url: baseDir + "/TableConf/getListSort",
@@ -49,6 +57,7 @@ var sortList = function(){
 			if($("#fiterAttend").is(":checked")) {
 				showAttending();
 			}
+			quickCounts();
 			$("#guestList").scrollTop(scrolTop);
 		},
 		error: function(){
@@ -140,6 +149,7 @@ $(document).ready(function(){
 		 }
 	});
 	
+	 quickCounts();
 	
 	$(".guest").draggable(guestDrag);
 	$(".table").draggable(tableDrag);
@@ -182,7 +192,7 @@ $(document).ready(function(){
 	$(document.body).on("click","[title='Edit User']",function(){
 		var guestId = $(this).attr('user');
 		$.ajax({
-			url: baseDir + "/guest/edit/" + guestId,
+			url: baseDir + "/partyGuest/edit/" + guestId,
 			type: 'GET',
 			cache: false,
 			success: function(data){
@@ -193,6 +203,8 @@ $(document).ready(function(){
 				$("#editGuest").append($(data).find("form"));
 				$("#editGuest fieldset.buttons").remove();
 				$("#editGuest #seat").parent().remove();
+				$("#editGuest #party").parent().remove();
+				$("#editGuest #guest").parent().remove();
 				$("#editGuest").dialog({
 					autoOpen: true,
 					height: 700,
@@ -201,9 +213,6 @@ $(document).ready(function(){
 					minHeight: 700,
 					buttons: {
 					 "Save": function() {
-						 var fn = $("#editGuest #firstName").val();
-						 var ln = $("#editGuest #lastName").val();
-						 if(fn && ln ) {
 						 $.ajax({
 								url: baseDir + "/TableConf/editUser",
 								type: 'POST',
@@ -215,6 +224,7 @@ $(document).ready(function(){
 									} else {
 										$("#guset_id_" + guestId).replaceWith(data);
 										$("#guset_id_" + guestId).draggable(guestDrag);
+										quickCounts();
 									} 
 									$("#editGuest").dialog( "close" );
 								},
@@ -222,9 +232,6 @@ $(document).ready(function(){
 									alert("failBoat")
 								}
 							});
-						 } else {
-							 alert("Enter a name");
-						 }
 					 	},
 					 	Cancel: function() {
 						 $( this ).dialog( "close" );
@@ -245,7 +252,7 @@ $(document).ready(function(){
 	
 	$("#addGuest").on("click",function(){
 		$.ajax({
-			url: baseDir + "/guest/create/",
+			url: baseDir + "/partyGuest/create/",
 			type: 'GET',
 			cache: true,
 			success: function(data){
@@ -256,6 +263,8 @@ $(document).ready(function(){
 				$("#editGuest").append($(data).find("form"));
 				$("#editGuest fieldset.buttons").remove();
 				$("#editGuest #seat").parent().remove();
+				$("#editGuest label[for='partyGuests']").parent().remove();
+				$("#editGuest #party").parent().remove();
 				$("#editGuest").dialog({
 					autoOpen: true,
 					height: 700,
@@ -264,25 +273,24 @@ $(document).ready(function(){
 					minHeight: 700,
 					buttons: {
 					 "Save": function() {
-						 var fn = $("#editGuest #firstName").val();
-						 var ln = $("#editGuest #lastName").val();
-						 if(fn && ln ) {
+						 
 						 $.ajax({
 								url: baseDir + "/TableConf/saveUser",
 								type: 'POST',
 								cache: false,
 								data: $("#editGuest form").serialize(),
 								success: function(data){
-									sortList();
-									$("#editGuest").dialog( "close" );
+									if(data.status == "SUCCESS") {
+										sortList();
+										$("#editGuest").dialog( "close" );
+									} else {
+										alert(data.msg)
+									}
 								},
 								error: function(){
 									alert("failBoat")
 								}
 							});
-						 } else {
-							 alert("Enter a name");
-						 }
 					 	},
 					 	Cancel: function() {
 						 $( this ).dialog( "close" );

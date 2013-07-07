@@ -35,12 +35,9 @@ class GuestImporter extends AbstractExcelImporter {
 				'G':'state',
 				'H':'zip',
 				'I':'phone',
-				'J':'entreeChoice',
-				'K':'gift',
-				'L':'guestEmail',
-				'M':'thankYouCardSent',
-				'N':'isAttending',
-				'O':'isGuest'		
+				'J':'guestEmail',
+				'K':'isGuest',
+				'L' :'party'		
 		]
 ]
 	
@@ -54,12 +51,9 @@ class GuestImporter extends AbstractExcelImporter {
 		state:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
 		zip:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
 		phone:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
-		entreeChoice:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
-		gift:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
-		email:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
-		thankYouCardSent:([expectedType: ExpectedPropertyType.IntType, defaultValue:null]),
-		isAttending:([expectedType: ExpectedPropertyType.IntType, defaultValue:null]),
-		isGuest:([expectedType: ExpectedPropertyType.IntType, defaultValue:null])
+		guestEmail:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
+		isGuest:([expectedType: ExpectedPropertyType.IntType, defaultValue:null]),
+		party:([expectedType: ExpectedPropertyType.StringType, defaultValue:null])
 	]
 	
 	public GuestImporter() {
@@ -69,7 +63,7 @@ class GuestImporter extends AbstractExcelImporter {
 	
 	def excelImportService = new ExcelImportService()
 
-	def getBooks() { 
+	def getGuests() {
 		return excelImportService.columns(workbook, CONFIG_BOOK_COLUMN_MAP,null,Config_Guest_Type) 
 	}
 

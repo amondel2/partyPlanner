@@ -29,23 +29,8 @@ class Guest implements Serializable {
 		state(nullable:true)
 		zip(nullable:true)
 		phone(nullable:true)
-		entreeChoice(nullable:true)
-		gift(nullable:true)
 		guestEmail(nullable:true)
-		thankYouCardSent(nullable:true)
-		isAttending(nullable:true)
 		isGuest(nullable:true)
-		seat(nullable:true,validator: {val, obj ->
-            if (val) {
-				def curr = Seat.findById(val?.id)
-				if(curr?.guest && curr?.guest?.id != obj?.id) {
-					return ['invalid.seatTaken',curr?.guest?.toString()]
-				}
-            }
-        })
-		guestOf(nullable:true,validator: {val, obj ->
-            if (val && val?.id == obj.id) return ['invlalid.guestOf']
-        })
     }
 	
 	static mapping = {
@@ -57,7 +42,7 @@ class Guest implements Serializable {
 		   params: [table: 'guest_hi_value', column: 'next_value', max_lo: 1]
 	}
 	
-	static belongsTo = [guestOf:Guest,seat:Seat]
+	static hasMany = [partyGuests:PartyGuest]
 	
 	Long id
 	String firstName
@@ -69,14 +54,9 @@ class Guest implements Serializable {
 	String state
 	String zip
 	String phone
-	String entreeChoice
-	String gift
 	String guestEmail
-	Boolean thankYouCardSent
-	Boolean isAttending
 	Boolean isGuest
-	Guest guestOf
-	Seat seat
+	
 	
 	String toString() {
 		return this.firstName + (this.middleName ? " " + this.middleName : '' ) + " " + this.lastName 	

@@ -13,16 +13,17 @@
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery-ui.css')}" type="text/css">
 		<g:javascript src="jquery.js" />
 		<g:javascript src="jquery-ui.js"/>
+		<g:javascript src="nav.js" />
 		<g:layoutHead/>
 		<r:layoutResources />
 		<style type='text/css' media='screen'>
-			.nav a.admin {
+			.ui-menu-item a.admin {
    				background-image: url('${fam.icon(name: 'user_suit')}');
 			}
-			.nav a.guests {
+			.ui-menu-item a.guests {
 				background-image: url('${fam.icon(name: 'group')}');
 			}
-			.nav a.partyTime {
+			.ui-menu-item a.partyTime {
 				background-image: url('${fam.icon(name: 'music')}');
 			}
 		</style>

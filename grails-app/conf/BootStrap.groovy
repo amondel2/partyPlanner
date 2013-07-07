@@ -1,6 +1,7 @@
 import com.muhlsoftware.wedding.Role
 import com.muhlsoftware.wedding.User
 import com.muhlsoftware.wedding.UserRole
+import com.muhlsoftware.wedding.Party
 
 
 class BootStrap {	
@@ -23,6 +24,11 @@ class BootStrap {
 		if(!UserRole.findByUser(testUser)) {		
 			UserRole.create testUser, adminRole, true
 		}
+		//Make sure we have one Party
+		if(Party.count() == 0){
+			def p = new Party(name:"Wedding")
+			p.save(flush:true)
+		} 
     }
     def destroy = {
     }

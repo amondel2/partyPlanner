@@ -95,7 +95,7 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.muhlsoftware.wedding.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.muhlsoftware.wedding.UserRole'
 grails.plugins.springsecurity.authority.className = 'com.muhlsoftware.wedding.Role'
-grails.plugins.springsecurity.successHandler.defaultTargetUrl = "/tableConf/"
+grails.plugins.springsecurity.successHandler.defaultTargetUrl = "/"
 grails.plugins.springsecurity.controllerAnnotations.staticRules = [
 	'/securityInfo/**': ['ROLE_ADMIN'],
 	'/role/**': ['ROLE_ADMIN'],

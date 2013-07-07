@@ -38,6 +38,7 @@ class WedTable implements Serializable{
 	}
    
    static hasMany = [seats:Seat]
+   static belongsTo = [party:Party]
    
    Long id
    String name
