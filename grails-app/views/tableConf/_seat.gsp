@@ -23,7 +23,7 @@
 		<span class="ui-state-error ui-corner-all delete-user icon-only-holder" seat="${s?.id}" title="Delete Seat"><span class="ui-icon ui-icon-circle-minus"></span></span>
 	</div>
 	<div class="clear"></div>
-	<g:if test="${s?.guest?.id}">
-		<g:render template="user"  model="[guest:s?.guest]"/>
+	<g:if test="${s?.partyGuest?.id}">
+		<g:render template="user"  model="[guest:s?.partyGuest]"/>
 	</g:if>
 </div>

@@ -18,7 +18,7 @@
 ***********************************************************************************/
  %>
 <g:set var="userTitle"><wed:formatGuestTitle guest='${guest}' /></g:set>
-<div id="guset_id_${guest?.id}" ${guest?.isAttending  ?   "attending='attend'" : ''}   guest="${guest?.id}" class="guest" title="${userTitle}" >${guest?.toString()} 
+<div id="guset_id_${guest?.id}" ${guest?.isAttending  ?   "attending='attend'" : ''}   guest="${guest?.id}" class="guest" title="${userTitle}" >${guest?.guest?.toString()} 
 	<span>
 		<span class="ui-state-error ui-corner-all delete-user icon-only-holder" user="${guest?.id}" title="Delete User"><span class="ui-icon ui-icon-circle-minus"></span></span>
 		<span class="ui-state-default ui-corner-all icon-only-holder edit-user" user="${guest?.id}" title="Edit User"><span class="ui-icon ui-icon-pencil"></span></span>

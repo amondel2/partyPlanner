@@ -22,11 +22,12 @@ class HtmlformatTagLib {
 	
 	def formatGuestTitle =  { attrs, body ->
 		 def str = ''
-		 Guest g = attrs?.guest
+		 PartyGuest pg = attrs?.guest
+		 Guest g = pg.guest
 		 
 		 if(g && g?.firstName) {
-			if (g?.isAttending) {
-				str = ' IS COMMING AND EATING ' + g.entreeChoice
+			if (pg?.isAttending) {
+				str = ' IS COMMING AND EATING ' + pg.entreeChoice
 		 	} else {
 				str = ' NOT COMMING ' 
 		    } 
@@ -57,5 +58,13 @@ class HtmlformatTagLib {
 			} 
 		 }
 		 out << body() << str
+	}
+	
+	def showPartyDropDown = { attrs, body ->
+		def str = ''
+		Party?.list().each{ p ->
+			str += '<li><a class="partyTime" href="' + g.createLink([uri: '/tableConf/index/' + p.id]) + '">' + p?.toString() + '</a></li>'
+		}
+		out << body() << str
 	}
 }

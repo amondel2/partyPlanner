@@ -18,102 +18,104 @@
 package com.muhlsoftware.wedding
 import org.codehaus.groovy.grails.commons.GrailsClassUtils
 import org.junit.internal.runners.statements.FailOnTimeout;
+import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class TableConfController {
 
-    def index() { 
-		def c = Guest.createCriteria()
+    def index() {
+		def c = PartyGuest.createCriteria()
+		def partyId = Long.valueOf(params?.id)
+		session['partyId'] = partyId
 		def results = c{
-			and{
-				isNull('seat')
-			   order('lastName','asc')
-			   order('firstName','asc')
-			   order('middleName','asc')
+			party{
+				eq('id',partyId)
 			}
+			guest{
+				order('lastName','asc')
+				order('firstName','asc')
+				order('middleName','asc')
+			}
+			isNull('seat')
 		}
-		render (view:"index",model:[tables:WedTable.list(),guests:results])
+		def tables = Party.findById(partyId)?.wedTables
+		render (view:"index",model:[tables:tables,guests:results,partyId:partyId])
 	}
 	
 	def getListSort(){
-		def c = Guest.createCriteria()
+		def c = PartyGuest.createCriteria()
 		def results = c{
-			and{
-				isNull('seat')
-			   order('lastName','asc')
-			   order('firstName','asc')
-			   order('middleName','asc')
+			party{
+				eq('id',Long.valueOf(session['partyId']))
 			}
+			guest{
+				order('lastName','asc')
+				order('firstName','asc')
+				order('middleName','asc')
+			}
+			isNull('seat')
 		}
 		render (template:"guestList",model:[guests:results] )
 	}
 	
 	def editUser() {
-		def g = Guest.findById(params?.id)
-		GrailsClassUtils.getPropertiesOfType(Guest,Boolean)?.each{ p->
+		def g = PartyGuest.findById(params?.id)
+		GrailsClassUtils.getPropertiesOfType(PartyGuest,Boolean)?.each{ p->
 			g.putAt(p.name,false) 
 		}
 		params?.each{ p ->
 			def name = p.key
 			if(g.hasProperty(name) && name != 'id' && name != 'version') { 
 				def v =  p.value
-				if(GrailsClassUtils.isPropertyOfType(Guest, name,Long)) {
+				if(GrailsClassUtils.isPropertyOfType(PartyGuest, name,Long)) {
 					v = Long.valueOf(v)
-				} else if ( GrailsClassUtils.isPropertyOfType(Guest, name,Boolean) ) {
+				} else if ( GrailsClassUtils.isPropertyOfType(PartyGuest, name,Boolean) ) {
 					if(v == "on") {
 						v = true
 					} 
 					v = Boolean.valueOf(v)
 				}
-				
-				if ( name != "guestOf") { 
-					g.putAt(name, v)
-				} else {
-					def ng
-					if(v.id && v.id != null && v.id != 'null') {
-						ng = Guest.findById(v.id)
-					}
-					if(ng) {
-						g.putAt(name, ng)
-					}
-				}
-			} 
+				g.putAt(name, v)
+			}
 		}
 		g.save(flush:true,,failOnError:true)
 		render (template:"user",model:[guest:g])  
 	}
 	
 	def saveUser(){
-		def g = new Guest()
+		def pa = params
+		def guest =  Guest.findById(params?.guest['id'])
+		def party = Party.findById(session['partyId'])
+		if( PartyGuest.findByPartyAndGuest(party,guest) ) {
+			def m = ['status': 'FAILURE', "msg": "Party Guest Already Exists"] 
+			render m as JSON
+			return
+		}
+		def newPG = new PartyGuest(party:party,guest:guest)
+		GrailsClassUtils.getPropertiesOfType(PartyGuest,Boolean)?.each{ p->
+			newPG.putAt(p.name,false)
+		}
 		params?.each{ p ->
 			def name = p.key
-			if(g.hasProperty(name) && name != 'id' && name != 'version') {
+			if(newPG.hasProperty(name) && name != 'id' && name != 'version' && name != 'guest') {
 				def v =  p.value
-				if(GrailsClassUtils.isPropertyOfType(Guest, name,Long)) {
+				if(GrailsClassUtils.isPropertyOfType(PartyGuest, name,Long)) {
 					v = Long.valueOf(v)
-				} else if ( GrailsClassUtils.isPropertyOfType(Guest, name,Boolean) ) {
+				} else if ( GrailsClassUtils.isPropertyOfType(PartyGuest, name,Boolean) ) {
 					if(v == "on") {
 						v = true
 					}
 					v = Boolean.valueOf(v)
 				}
 				
-				if ( name != "guestOf") {
-					g.putAt(name, v)
-				} else {
-					def ng
-					if(v.id && v.id != null && v.id != 'null') {
-						ng = Guest.findById(v.id)
-					}
-					if(ng) {
-						g.putAt(name, ng)
-					}
-				}
+				newPG.putAt(name, v)
 			}
 		}
-		g.save(flush:true,,failOnError:true)
-		render (template:"user",model:[guest:g])
+		newPG.save(flush:true,,failOnError:true)
+		//associate this guest to the current party
+		def m = ['status': 'SUCCESS', "msg": "SUCCESS"]
+		render m as JSON
 	}
 	
 	def tableDrop(){
@@ -125,33 +127,45 @@ class TableConfController {
 	}
 	
 	def  delGuest(){
-		def g = Guest.findById(params?.guestId);
-		g.seat?.guest = null;
-		g.seat?.save(flush:true,,failOnError:true)
-		Seat?.findByGuest(g)?.each{
-			it.guest = null
+		def pg = PartyGuest.findById(params?.guestId)
+		pg?.party.partyGuests = null
+		pg?.guest.partyGuests = null
+		pg?.party.save(flush: true,failOnError:true)
+		pg?.guest.save(flush: true,failOnError:true)
+		pg.seat?.partyGuest = null
+		pg.seat?.save(flush:true,failOnError:true)
+		def s = Seat.withCriteria {
+			partyGuest{
+				eq('id',pg?.id)
+			}
+		}
+		s?.each{
+			it.partyGuest = null
 			it.save(flush: true,failOnError:true)
 		}
-		g.seat = null
-		g.delete(flush: true)
+		pg.seat = null
+		pg.delete(flush: true)
 		render(text:"success")
 	}
 	
 	def addSeat() {
 		def table = WedTable.findById(params?.tableId)
+		
 		def s = new Seat()
 		def seats = table?.seats?.sort{b,a -> a.seatNumber <=> b.seatNumber}
 		s.seatNumber = seats?.get(0)?.seatNumber + 1 ?: 1
 		s.wedTable = table
 		s.save(flush:true,failOnError:true)
+		
+	
 		render (template :"seat",model:[s:s]) 
 	}
 	
 	def delSeat() {
 		def s = Seat.findById(params?.seatId)
-		if(s?.guest?.id){
-			def g = s?.guest
-			s.guest = null
+		if(s?.partyGuest?.id){
+			def g = s?.partyGuest
+			s.partyGuest = null
 			g?.seat = null
 			g.save(flush: true,failOnError:true)
 		}
@@ -162,15 +176,15 @@ class TableConfController {
 	
 	def sitDown() {
 		def s = Seat.findById(params?.seatId)
-		if(s.guest) {
+		if(s.partyGuest) {
 			render(text:"Already There");
 		} else {
-			def g = Guest.findById(params?.guestId)
+			def g = PartyGuest.findById(params?.guestId)
 			if(g.seat) {
-				g.seat?.guest = null
+				g.seat?.partyGuest = null
 				g.seat.save(flush:true);
 			}
-			s?.guest = g
+			s?.partyGuest = g
 			g?.seat = s
 			g?.save(flush: true,failOnError:true)
 			s?.save(flush: true,failOnError:true)
@@ -179,10 +193,15 @@ class TableConfController {
 	}
 	
 	def standUp() {
-		def g = Guest.findById(params?.guestId)
+		def g = PartyGuest.findById(params?.guestId)
 		//findAnySeat with this guest
-		Seat?.findByGuest(g)?.each{
-			it.guest = null
+		def s = Seat.withCriteria {
+			partyGuest{
+				eq('id',g?.id)
+			}
+		}
+		s?.each{
+			it.partyGuest = null
 			it.save(flush: true,failOnError:true)
 		}
 		g?.seat = null
@@ -191,25 +210,27 @@ class TableConfController {
 	}
 	
 	def delTable() {
-		def t = WedTable.findById(params?.tableId)
-		t.seats?.each { s ->
-			if(s?.guest?.id){
-				def g = s?.guest
-				s.guest = null
+		WedTable t = WedTable.findById(params?.tableId)
+		t?.seats?.each { s ->
+			if(s?.partyGuest?.id){
+				PartyGuest g = s?.partyGuest
+				s.partyGuest = null
 				g?.seat = null
 				g.save(flush: true,failOnError:true)
 			}
 		}
-		t.delete(flush: true)
+		t?.delete(flush: true)
 		render(text:"success")
 	}
 	
 	def addTable() {
 		def t = new WedTable()
+		def p = Party.findById(session['partyId'])
 		t.name = params?.tableName
 		def s = new Seat()
 		s.seatNumber = 1
 		s.wedTable = t
+		t.party = p
 		t.seats = [s]
 		t.save(flush: true,failOnError:true)
 		s.save(flust:true,failOnError:true)

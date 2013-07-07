@@ -34,7 +34,7 @@ class ImportGuestController {
 			def msg=""
 			def items
 			try {
-				items = importer.getBooks()
+				items = importer.getGuests()
 			} catch (Exception e) {
 				println e?.message
 				msg += "Excel Sheet is not valid"
@@ -51,10 +51,11 @@ class ImportGuestController {
 						g = new Guest()
 						isupdate = true
 					}
+					def gpArray = []
 					item.eachWithIndex { itemObj, i ->
 						def itemName = itemObj?.key
 						def itemValue = itemObj?.value
-						if(g.hasProperty(itemName)) {
+						if(g.hasProperty(itemName) || itemName == 'party') {
 							if(itemName == 'isGuest') {
 								if(itemValue > 0 ) {
 									g.isGuest = true
@@ -62,17 +63,24 @@ class ImportGuestController {
 									g.isGuest = false
 								}
 
-							} else if (itemName == 'thankYouCardSent' ) {
-								if(itemValue > 0 ) {
-									g.thankYouCardSent = true
-								} else {
-									g.thankYouCardSent = false
-								}
-							} else if (itemName == 'isAttending' ) {
-								if(itemValue > 0 ) {
-									g.isAttending = true
-								} else {
-									g.isAttending = false
+							}  else if (itemName == 'party' ) {
+								itemValue = itemValue?.trim()
+								def itemVarry = itemValue?.tokenize(',')
+								if(itemValue?.size() == 0 || !itemVarry || itemVarry?.size() == 0) {
+									//they won't be show up for any party but will be loaded into the system
+								}  else {
+									itemVarry.each{ party ->
+										def partyObj = Party.findByNameIlike(party?.trim())
+										if(partyObj){
+											def guestParty
+											if(isupdate) { 
+												guestParty = PartyGuest.findByGuestAndParty(g,partyObj)
+											}
+											if(!guestParty) {
+												gpArray.add(partyObj)
+											}
+										}	
+									}
 								}
 							} else {
 								g.putAt(itemName, itemValue)
@@ -84,6 +92,10 @@ class ImportGuestController {
 					if(g.validate()){ 
 						isupdate ? newItems++ : updatedItems++
 						g.save(flush:true)
+						gpArray.each{ partyObj ->
+							def gp = new PartyGuest(guest:g,party:partyObj)
+							gp.save(flush:true)
+						}
 					} else {
 						g.errors.allErrors.each{
 							msg += "line " + row + ": " + it?.toString() + "<br><br>"

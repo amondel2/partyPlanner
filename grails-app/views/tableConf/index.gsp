@@ -30,6 +30,8 @@
 	<div id="guestListFiliters">
 		<input type="checkbox" id="fiterAttend" value="on"><label for="fiterAttend">&nbsp;Show Only Attending Guest</label>
 		<span id="sortList" class="ui-state-default ui-corner-all" title="Sort List"><span class="ui-icon ui-icon-arrowrefresh-1-e"></span><span>Refresh List</span></span>
+		<span>Invited Guest Count:<span id='invitedCount'></span></span>
+		<span>Attending Guest Count:<span id='attendingCount'></span></span>
 	</div>
 	<div class="guestTableLayout" id="guestTableConfContainer">
 		<div id="guestList" >
