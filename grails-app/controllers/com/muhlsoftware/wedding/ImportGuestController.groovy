@@ -20,10 +20,10 @@ import grails.plugins.springsecurity.Secured
 
 class ImportGuestController {
 
-	@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_CLIENT_ADMIN'])
 	def index() { render(view:"import") }
 
-	@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_CLIENT_ADMIN'])
 	def upload() {
 		def pp = params
 		def p = request.getFile('excel')

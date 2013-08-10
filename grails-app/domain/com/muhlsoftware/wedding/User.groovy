@@ -6,14 +6,19 @@ class User {
 
 	String username
 	String password
+	
 	boolean enabled
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+	Client client
 
+	static belongsTo = [client:Client]
+		
 	static constraints = {
-		username blank: false, unique: true
+		username blank: false, unique: ['client']
 		password blank: false
+		client blank:false, nullable: false
 	}
 
 	static mapping = {

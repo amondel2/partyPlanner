@@ -20,9 +20,9 @@ package com.muhlsoftware.wedding
 class Guest implements Serializable {
 
     static constraints = {
-		firstName(nullable:false,blank:false,unique:['middleName','lastName'])
+		firstName(nullable:false,blank:false,unique:['middleName','lastName', 'client'])
 		middleName(nullable:true)
-		lastName(nullable:false,blank:false,unique:['middleName','firstName'])
+		lastName(nullable:false,blank:false,unique:['middleName','firstName', 'client'])
 		address1(nullable:true)
 		address2(nullable:true)
 		city(nullable:true)
@@ -42,9 +42,11 @@ class Guest implements Serializable {
 		   params: [table: 'guest_hi_value', column: 'next_value', max_lo: 1]
 	}
 	
+	static belongsTo = [client:Client]
 	static hasMany = [partyGuests:PartyGuest]
 	
 	Long id
+	Client client
 	String firstName
 	String middleName
 	String lastName

@@ -1,7 +1,7 @@
 <%=packageName ? "package ${packageName}\n\n" : ''%>import org.springframework.dao.DataIntegrityViolationException
 import grails.plugins.springsecurity.Secured
 
-@Secured(['ROLE_ADMIN'])
+@Secured(['ROLE_CLIENT_ADMIN'])
 class ${className}Controller {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]

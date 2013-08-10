@@ -67,4 +67,12 @@ class HtmlformatTagLib {
 		}
 		out << body() << str
 	}
+	
+	def getClientList = { attrs, body ->
+		def str = ''
+		Client?.findAllByActive(true) each{ p ->
+			str += '<option value="' + p.id + '">' + p?.toString() + '</option>' + "\n"
+		}
+		out << body() << str
+	}
 }

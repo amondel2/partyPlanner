@@ -21,7 +21,7 @@ import org.junit.internal.runners.statements.FailOnTimeout;
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 
-@Secured(['ROLE_ADMIN','ROLE_USER'])
+@Secured(['ROLE_CLIENT_ADMIN','ROLE_USER'])
 class TableConfController {
 
     def index() {

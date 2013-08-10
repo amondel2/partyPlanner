@@ -3,8 +3,8 @@ package com.muhlsoftware.wedding
 class PartyGuest {
 
      static constraints = {
-		party(nullable:false,blank:false,unique:['guest'])
-		guest(nullable:false,blank:false,unique:['party'])
+		party(nullable:false,blank:false,unique:['guest','client'])
+		guest(nullable:false,blank:false,unique:['party','client'])
 		entreeChoice(nullable:true)
 		gift(nullable:true)
 		thankYouCardSent(nullable:true)
@@ -24,14 +24,15 @@ class PartyGuest {
 		autoTimestamp false
 		cache true
 		id generator: 'hilo',
-		   params: [table: 'guest_hi_value', column: 'next_value', max_lo: 1]
+		   params: [table: 'party_guest_hi_value', column: 'next_value', max_lo: 1]
 	}
 	
-	static belongsTo = [party:Party,guest:Guest]
+	static belongsTo = [party:Party,guest:Guest,client:Client]
 	
 	Long id
 	Party party
 	Guest guest
+	Client client
 	String entreeChoice
 	String gift
 	Boolean thankYouCardSent
