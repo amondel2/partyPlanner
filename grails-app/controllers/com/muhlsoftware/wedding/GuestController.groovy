@@ -23,7 +23,6 @@ import grails.plugins.springsecurity.Secured
 import com.muhlsoftware.wedding.extralogin.ClientAuthentication
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import pl.touk.excel.export.WebXlsxExporter
 import pl.touk.excel.export.getters.PropertyGetter
 
 class PartyGetter extends PropertyGetter<Guest, String> { 
@@ -84,7 +83,7 @@ class GuestController {
 				ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
 				def client = Client.findById(auth.getClientId())				
 				def guest  = Guest.findAllByClient(client)
-				new WebXlsxExporter().with {
+				new SheetNamedWebXlsxExporter().with {
 					setResponseHeaders(response)
 					fillHeader(headers)
 					add(guest, withProperties)
