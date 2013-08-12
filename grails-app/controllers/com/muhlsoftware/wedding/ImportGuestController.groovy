@@ -16,15 +16,28 @@
 	along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.txt.
 ***********************************************************************************/
 package com.muhlsoftware.wedding
+import com.muhlsoftware.wedding.extralogin.ClientAuthentication
 import grails.plugins.springsecurity.Secured
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 class ImportGuestController {
 
 	@Secured(['ROLE_CLIENT_ADMIN'])
-	def index() { render(view:"import") }
+	def index() { 
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		def client = Client.findById(auth.getClientId())
+		
+		render(view:"import") 
+	}
 
 	@Secured(['ROLE_CLIENT_ADMIN'])
 	def upload() {
+			
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		def client = Client.findById(auth.getClientId())
 		def pp = params
 		def p = request.getFile('excel')
 
@@ -45,11 +58,12 @@ class ImportGuestController {
 				def updatedItems = 0
 				def row=1
 				items.each{ item->
-					def g = Guest.findByFirstNameAndMiddleNameAndLastName(item?.firstName,item?.middleName,item?.lastName)
-					def isupdate = false
+					def g = Guest.findByFirstNameAndMiddleNameAndLastNameAndClient(item?.firstName,item?.middleName,item?.lastName,client)
+					def isupdate = true
 					if(!g) {
 						g = new Guest()
-						isupdate = true
+						isupdate = false
+						g.client = client
 					}
 					def gpArray = []
 					item.eachWithIndex { itemObj, i ->
@@ -63,14 +77,14 @@ class ImportGuestController {
 									g.isGuest = false
 								}
 
-							}  else if (itemName == 'party' ) {
+							} else if (itemName == 'party' ) {
 								itemValue = itemValue?.trim()
 								def itemVarry = itemValue?.tokenize(',')
 								if(itemValue?.size() == 0 || !itemVarry || itemVarry?.size() == 0) {
 									//they won't be show up for any party but will be loaded into the system
 								}  else {
 									itemVarry.each{ party ->
-										def partyObj = Party.findByNameIlike(party?.trim())
+										def partyObj = Party.findByNameIlikeAndClient(party?.trim(),client)
 										if(partyObj){
 											def guestParty
 											if(isupdate) { 
@@ -90,7 +104,7 @@ class ImportGuestController {
 						}
 					}
 					if(g.validate()){ 
-						isupdate ? newItems++ : updatedItems++
+						isupdate ?  updatedItems++ : newItems++
 						g.save(flush:true)
 						gpArray.each{ partyObj ->
 							def gp = new PartyGuest(guest:g,party:partyObj)

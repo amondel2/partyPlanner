@@ -55,6 +55,7 @@
 			<input type="text" name="tableName" id="tableName" value="" required="required" placeholder="Enter a Name" />
 		</div>
 		<div id="editGuest" title="Edit a Guest"></div>
+		<div id="addGuestDi" title="Add a Guest To The Party"></div>
 		<div id="tableDrop" title="Delete Confirm">
 			Are you sure you want to Delete This Table?
 		</div>

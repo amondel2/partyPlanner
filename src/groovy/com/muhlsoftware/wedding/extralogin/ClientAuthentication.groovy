@@ -17,4 +17,8 @@ class ClientAuthentication extends UsernamePasswordAuthenticationToken {
 		super(principal, credentials, authorities)
 		ClientId = clientId
 	}
+	
+	String getClientId() {
+		return this.ClientId
+	}
 }

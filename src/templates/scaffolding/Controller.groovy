@@ -1,5 +1,8 @@
 <%=packageName ? "package ${packageName}\n\n" : ''%>import org.springframework.dao.DataIntegrityViolationException
 import grails.plugins.springsecurity.Secured
+import com.muhlsoftware.wedding.extralogin.ClientAuthentication
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Secured(['ROLE_CLIENT_ADMIN'])
 class ${className}Controller {
@@ -11,17 +14,31 @@ class ${className}Controller {
     }
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [${propertyName}List: ${className}.list(params), ${propertyName}Total: ${className}.count()]
+		
+		params.max = Math.min(max ?: 10, 100)
+		def c = ${className}.createCriteria()
+		def results = c.list (params) {
+			if(${className}.hasProperty("client")) {
+				ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+				def client = Client.findById(auth.getClientId())
+				eq("client":client) 
+			}
+		}
+		
+       
+        [${propertyName}List: results, ${propertyName}Total:results.totalCount]
     }
 
     def create() {
         [${propertyName}: new ${className}(params)]
     }
-
+	
     def save() {
         def ${propertyName} = new ${className}(params)
         if (!${propertyName}.save(flush: true)) {
+			if(${propertyName} instanceof String) {
+				${propertyName} = ${propertyName?.trim()}
+			}
             render(view: "create", model: [${propertyName}: ${propertyName}])
             return
         }
