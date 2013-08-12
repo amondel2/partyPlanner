@@ -5,6 +5,9 @@ A tool for managing guest and seating arrangments.
 
 This Tool is easy to use or at least thats the point.
 
+This is currently running on Grails 2.2.4 and the eventaul plan is to make this into a Three-tier application since its only Two-tier tired now. 
+All code released under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+
 1. Gettiong Guest Into the system 
 
     a. Ussing Excel
@@ -24,6 +27,6 @@ This Tool is easy to use or at least thats the point.
 
     a. Configure your Datasource
 
-    b. run grails run-app or grails war (see http://grails.org/doc/2.2.1/ref/Command%20Line/war.html)
+    b. run grails run-app or grails war (see http://grails.org/doc/2.2.4/ref/Command%20Line/war.html)
    
 
