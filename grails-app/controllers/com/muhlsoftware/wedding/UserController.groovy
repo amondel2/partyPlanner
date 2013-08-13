@@ -191,7 +191,7 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 	protected void addRoles(user) {
 		String upperAuthorityFieldName = GrailsNameUtils.getClassName(
 				SpringSecurityUtils.securityConfig.authority.nameField, null)
-		
+		String authorityFieldName = SpringSecurityUtils.securityConfig.authority.nameField
 		for (String key in params.keySet()) {
 			if (key.contains('ROLE') && 'on' == params.get(key)) {
 				lookupUserRoleClass().create user, lookupRoleClass()."findBy$upperAuthorityFieldName"(key), true
