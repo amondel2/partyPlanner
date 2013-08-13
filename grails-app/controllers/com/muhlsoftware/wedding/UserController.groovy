@@ -20,11 +20,12 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 	}
 
 	def save = {
+		String passwordFieldName = SpringSecurityUtils.securityConfig.userLookup.passwordPropertyName
 		params.client = Client.findById(params.client)
 		def user = lookupUserClass().newInstance(params)
 		if (params.password) {
 			String salt = saltSource instanceof NullSaltSource ? null : params.username
-			user.password = springSecurityUiService.encodePassword(params.password, salt)
+			user."$passwordFieldName" = springSecurityUiService.encodePassword(params.password, salt)
 		}
 		if (!user.save(flush: true)) {
 			render view: 'create', model: [user: user, authorityList: sortedRoles()]
@@ -56,6 +57,7 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 			}
 
 		def oldPassword = user."$passwordFieldName"
+		params.client = Client.findById(params.client)
 		user.properties = params
 		if (params.password && !params.password.equals(oldPassword)) {
 			String salt = saltSource instanceof NullSaltSource ? null : params.username
@@ -189,7 +191,7 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 	protected void addRoles(user) {
 		String upperAuthorityFieldName = GrailsNameUtils.getClassName(
 				SpringSecurityUtils.securityConfig.authority.nameField, null)
-
+		
 		for (String key in params.keySet()) {
 			if (key.contains('ROLE') && 'on' == params.get(key)) {
 				lookupUserRoleClass().create user, lookupRoleClass()."findBy$upperAuthorityFieldName"(key), true

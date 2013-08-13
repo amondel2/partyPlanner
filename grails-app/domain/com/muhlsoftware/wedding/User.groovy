@@ -23,6 +23,7 @@ class User {
 
 	static mapping = {
 		password column: '`password`'
+		cache false
 	}
 
 	Set<Role> getAuthorities() {
@@ -30,7 +31,9 @@ class User {
 	}
 
 	def beforeInsert() {
-		encodePassword()
+		if (isDirty('password')) {
+			encodePassword()
+		}
 	}
 
 	def beforeUpdate() {
