@@ -15,7 +15,6 @@
 	<g:form action='userSearch' name='userSearchForm'>
 
 		<br/>
-
 		<table>
 			<tbody>
 
@@ -52,7 +51,8 @@
 				<g:radioGroup name='passwordExpired' labels="['','','']" values="[1,-1,0]" value='${passwordExpired}'>
 				<td><%=it.radio%></td>
 				</g:radioGroup>
-			</tr>
+				</tr>
+			
 			<tr><td colspan='4'>&nbsp;</td></tr>
 			<tr>
 				<td colspan='4'><s2ui:submitButton elementId='search' form='userSearchForm' messageCode='spring.security.ui.search'/></td>

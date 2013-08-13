@@ -16,6 +16,10 @@
 	along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.txt.
 ***********************************************************************************/
 package com.muhlsoftware.wedding
+import com.muhlsoftware.wedding.extralogin.ClientAuthentication
+import grails.plugins.springsecurity.Secured
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 class HtmlformatTagLib {
 	static namespace = "wed"
@@ -62,7 +66,9 @@ class HtmlformatTagLib {
 	
 	def showPartyDropDown = { attrs, body ->
 		def str = ''
-		Party?.list().each{ p ->
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+		def client = Client.findById(auth.getClientId())
+		Party?.findAllByClient(client)?.each{ p ->
 			str += '<li><a class="partyTime" href="' + g.createLink([uri: '/tableConf/index/' + p.id]) + '">' + p?.toString() + '</a></li>'
 		}
 		out << body() << str

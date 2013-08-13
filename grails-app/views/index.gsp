@@ -8,7 +8,12 @@
 		<g:render template="/layouts/navMenu" />
 		<div id="page-body" role="main">
 			<h1>Welcome to Party Planner</h1>
-			<p>Please Login </p>
+			<sec:ifNotLoggedIn>
+				<p>Please Login </p>
+			</sec:ifNotLoggedIn>
+			<sec:ifLoggedIn>
+				Welcome Back! 
+			</sec:ifLoggedIn>
 		</div>
 	</body>
 </html>

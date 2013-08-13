@@ -41,11 +41,15 @@ tabData << [name: 'roles',    icon: 'icon_role', messageCode: 'spring.security.u
 
 			<s2ui:checkboxRow name='passwordExpired' labelCode='user.passwordExpired.label' bean="${user}"
                            labelCodeDefault='Password Expired' value="${user?.passwordExpired}"/>
-               
+            <sec:ifAnyGranted roles="ROLE_SUPER_USER">
             <tr><td>Client:</td><td><select name="client">
               	<wed:getClientList />
              </select> 
              </td></tr>
+             </sec:ifAnyGranted>
+             <sec:ifAnyGranted roles="ROLE_CLIENT_ADMIN">
+             	<tr>Client:</td><td><input type="hidden" name="client" value="${client?.id}">${client.name}</td></tr>
+             </sec:ifAnyGranted>
 		</tbody>
 		</table>
 	</s2ui:tab>

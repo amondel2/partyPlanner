@@ -6,7 +6,10 @@ import grails.util.GrailsNameUtils
 import org.codehaus.groovy.grails.plugins.springsecurity.NullSaltSource
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.springframework.dao.DataIntegrityViolationException
-
+import com.muhlsoftware.wedding.extralogin.ClientAuthentication
+import grails.plugins.springsecurity.Secured
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 class UserController extends grails.plugins.springsecurity.ui.UserController {
 	def saltSource
@@ -16,7 +19,9 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 	def create = {
 		params.client = Client.findById(params.client)
 		def user = lookupUserClass().newInstance(params)
-		[user: user, authorityList: sortedRoles()]
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+		def client = Client.findById(auth.getClientId())
+		[user: user, authorityList: sortedRoles(),client:client]
 	}
 
 	def save = {
@@ -134,7 +139,14 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 				queryParams[name.key] = value == 1
 			}
 		}
-
+			
+	
+		if(SpringSecurityUtils.ifNotGranted('ROLE_SUPER_USER')) {
+			ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+			def client = Client.findById(auth.getClientId())
+			hql.append " AND u.client=:client"
+			queryParams.putAt("client",client)
+		}
 		int totalCount = lookupUserClass().executeQuery("SELECT COUNT(DISTINCT u) $hql", queryParams)[0]
 
 		Integer max = params.int('max')
@@ -169,16 +181,23 @@ class UserController extends grails.plugins.springsecurity.ui.UserController {
 		if (params.term?.length() > 2) {
 			String username = params.term
 			String usernameFieldName = SpringSecurityUtils.securityConfig.userLookup.usernamePropertyName
-
+			
+			def client
 			setIfMissing 'max', 10, 100
-
+			def qp = [name: "${username.toLowerCase()}%"]
+			def clientQuery = ''
+			if(SpringSecurityUtils.ifNotGranted('ROLE_SUPER_USER')) {
+				ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+				client = Client.findById(auth.getClientId())
+				clientQuery = " and u.client = :client "
+				qp.putAt("client",client)
+			}
 			def results = lookupUserClass().executeQuery(
 					"SELECT DISTINCT u.$usernameFieldName " +
 					"FROM ${lookupUserClassName()} u " +
-					"WHERE LOWER(u.$usernameFieldName) LIKE :name " +
+					"WHERE LOWER(u.$usernameFieldName) LIKE :name " + clientQuery +
 					"ORDER BY u.$usernameFieldName",
-					[name: "${username.toLowerCase()}%"],
-					[max: params.max])
+					qp,[max: params.max])
 
 			for (result in results) {
 				jsonData << [value: result]
