@@ -25,70 +25,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import pl.touk.excel.export.getters.PropertyGetter
 
-class PartyGetter extends PropertyGetter<Guest, String> { 
-	PartyGetter(String propertyName) {
-		super(propertyName)
-	}
-
-	@Override
-	protected String format(Guest value) {
-		return value //you can do anything you like in here
-	}
-	
-	@Override
-	String getFormattedValue(Object object) {
-		if(propertyName == null) {
-			return null
-		}
-		def parties = object.partyGuests.collect{PartyGuest pg->
-			pg.party.name
-		}
-		return parties && parties?.size() > 0 ? parties.join(',') : ' '
-	}
-}
-
-class IsGuestGetter extends PropertyGetter<Guest, String> {
-	IsGuestGetter(String propertyName) {
-		super(propertyName)
-	}
-
-	@Override
-	protected String format(Guest value) {
-		return value //you can do anything you like in here
-	}
-	
-	@Override
-	String getFormattedValue(Object object) {
-		if(propertyName == null) {
-			return ''
-		}
-		if(object.getAt(propertyName)) {
-			return '1'
-		} else {
-			return ''
-		}
-	}
-}
 
 @Secured(['ROLE_CLIENT_ADMIN'])
 class GuestController {
-
+	def exportService
 	static scaffold = true
     def index() { redirect(action:list) }
 	
-	def exportGuestToExcel() {
-				def headers = ['First', 'Middle', 'Last', 'Address1', 'Address2', 'City', 'State', 'Zip', 'Phone', 'E-mail','isGuest','party']
-				def withProperties = ['firstName', 'middleName', 'lastName', 'address1', 'address2', 'city', 'state', 'zip', 'phone', 'guestEmail', new IsGuestGetter('isGuest'),new  PartyGetter('parties')]
-				
+	def exportGuestToExcel() {			
 				ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
 				def client = Client.findById(auth.getClientId())				
-				def guest  = Guest.findAllByClient(client)
-				new SheetNamedWebXlsxExporter().with {
-					setResponseHeaders(response)
-					fillHeader(headers)
-					add(guest, withProperties)
-					save(response.outputStream)
-				}
+				def guests  = Guest.findAllByClient(client)
+				exportService.exportGuestItems(response,guests)
 	}
 }
 

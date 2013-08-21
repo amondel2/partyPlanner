@@ -2,8 +2,6 @@ package com.muhlsoftware.wedding
 
 class User {
 
-	transient springSecurityService
-
 	String username
 	String password
 	
@@ -28,21 +26,5 @@ class User {
 
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this).collect { it.role } as Set
-	}
-
-	def beforeInsert() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
-	}
-
-	def beforeUpdate() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
-	}
-
-	protected void encodePassword() {
-		password = springSecurityService.encodePassword(password)
 	}
 }

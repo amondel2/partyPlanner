@@ -54,6 +54,10 @@
 		<div id="addTableForm" title="Add a Table">
 			<input type="text" name="tableName" id="tableName" value="" required="required" placeholder="Enter a Name" />
 		</div>
+		<div id="editTableForm" title="Edit a Table">
+			<input type="hidden" name="tableId" id="editDialTableId" value="">
+			<input type="text" name="tableName" id="editDialTableName" value="" required="required" placeholder="Enter a Name" />
+		</div>
 		<div id="editGuest" title="Edit a Guest"></div>
 		<div id="addGuestDi" title="Add a Guest To The Party"></div>
 		<div id="tableDrop" title="Delete Confirm">

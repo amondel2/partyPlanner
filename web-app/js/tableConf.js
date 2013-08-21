@@ -189,6 +189,12 @@ $(document).ready(function(){
 		$("#guestDrop").dialog('open');
 	});
 	
+	$(document.body).on("click","[title='Edit Table']",function(){
+		$("#editDialTableId").val($(this).attr('table'));
+		$("#editDialTableName").val($(this).parent().parent().children().first().text());
+		$("#editTableForm").dialog('open');
+	});
+	
 	$(document.body).on("click","[title='Edit User']",function(){
 		var guestId = $(this).attr('user');
 		var name = $(this).parent().parent().text();
@@ -402,6 +408,44 @@ $(document).ready(function(){
 		 modal: true
 	});
 	
+	$("#editTableForm").dialog({
+		autoOpen: false,
+		height: 200,
+		minHeight: 200,
+		buttons: {
+		 "Edit Table": function() {
+			 var tid = $("#editDialTableId").val();
+			 var tn = $.trim($("#editDialTableName").val());
+			 if(tn && tid && tn.length > 0) {
+				 $.ajax({
+					 	cache: false,
+						url: baseDir + "/TableConf/editTableName",
+						type: 'POST',
+						data: {"tableName":tn,"tableId":tid},
+						success: function(data){
+							if(data == "success") {
+								$("#table_" + tid +" .header:first > div:first").html(tn);
+							}
+							$("#editTableForm").dialog( "close" );
+						},
+						error: function(){
+							alert("failBoat")
+						}
+					});
+			 } else {
+				 alert("Enter a name");
+			 }
+		 	},
+		 	Cancel: function() {
+			 $( this ).dialog( "close" );
+		 	}
+		 },
+		 close: function() {
+			 $("#editDialTableName").val("");
+			 $("#editDialTableId").val("");
+			 },
+		 modal: true
+	});
 	
 	$("#addTableForm").dialog({
 		autoOpen: false,
@@ -409,8 +453,8 @@ $(document).ready(function(){
 		minHeight: 200,
 		buttons: {
 		 "Create Table": function() {
-			 var tn = $("#tableName").val();
-			 if(tn) {
+			 var tn = $.trim($("#tableName").val());
+			 if(tn && tn.length > 0) {
 			 $.ajax({
 				 	cache: false,
 					url: baseDir + "/TableConf/addTable",

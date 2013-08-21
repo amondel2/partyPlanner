@@ -14,18 +14,27 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 
-import grails.plugins.springsecurity.Secured
+import pl.touk.excel.export.getters.PropertyGetter;
 
+class IsGuestGetter extends PropertyGetter<Guest, String> {
+	IsGuestGetter(String propertyName) {
+		super(propertyName)
+	}
 
-@Secured(['ROLE_CLIENT_ADMIN'])
-class PartyController {
-	static scaffold = true
-	def index() { redirect(action:list) }
-	def exportService
-	def exportGuestToExcel() {
-
-		def guests = PartyGuest.findAllByParty(Party.findById(params?.id))?.collect{it.guest}.sort{it.lastName}
-
-		exportService.exportGuestItems(response,guests)
+	@Override
+	protected String format(Guest value) {
+		return value //you can do anything you like in here
+	}
+	
+	@Override
+	String getFormattedValue(Object object) {
+		if(propertyName == null) {
+			return ''
+		}
+		if(object.getAt(propertyName)) {
+			return '1'
+		} else {
+			return ''
+		}
 	}
 }

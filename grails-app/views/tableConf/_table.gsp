@@ -21,6 +21,8 @@
 	<div class="header">
 		<div>${t?.toString()}</div>
 		<div>
+			<span class="ui-state-default ui-corner-all icon-only-holder edit-table" table="${t?.id}" title="Edit Table"><span class="ui-icon ui-icon-pencil"></span></span>
+			
 			<span class="ui-state-error ui-corner-all icon-only-holder" title="Delete Table" table="${t?.id}"><span class="ui-icon ui-icon-circle-minus"></span></span>
 			<span class="ui-state-default ui-corner-all seatAdder" title="Add Seat" table="${t?.id}"><span class="ui-icon ui-icon-circle-plus"></span><span>Add Seat</span></span>
 		</div>
