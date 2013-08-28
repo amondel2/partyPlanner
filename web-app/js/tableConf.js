@@ -425,6 +425,7 @@ $(document).ready(function(){
 						success: function(data){
 							if(data == "success") {
 								$("#table_" + tid +" .header:first > div:first").html(tn);
+								$("#table_" + tid +" .header:first > div:first").attr("title",tn);
 							}
 							$("#editTableForm").dialog( "close" );
 						},

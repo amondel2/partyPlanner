@@ -19,7 +19,7 @@
  %>
 <div id="table_${t?.id}" class="table" table="${t?.id}" top="${t?.horzOffset?:''}" left="${t.verOffset ?: ''}">
 	<div class="header">
-		<div>${t?.toString()}</div>
+		<div title="${t?.toString()}">${t?.toString()}</div>
 		<div>
 			<span class="ui-state-default ui-corner-all icon-only-holder edit-table" table="${t?.id}" title="Edit Table"><span class="ui-icon ui-icon-pencil"></span></span>
 			

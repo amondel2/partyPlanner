@@ -32,9 +32,19 @@
 	cursor: pointer;
 }
 
+.table > .header > div:FIRST-CHILD {
+	max-width: 131px;
+}
+
+seat .header > div {
+	max-width: 240px;
+}
+
 .table .header > div:FIRST-CHILD, .seat .header > div{
 	float:left;
 	margin:0px;	
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 
@@ -64,6 +74,11 @@
 	cursor: pointer;
 	color:white;
 }
+
+ #guestList > div {
+ 	text-overflow: ellipsis;
+	overflow: hidden;
+ }
 
 .icon-only-holder {
 	width:16px;
