@@ -91,22 +91,27 @@ log4j = {
            'net.sf.ehcache.hibernate'
 }
 
+//
+def ENVVAR = 'partyPlanConfig'
+def extConfig = System.properties.getProperty(ENVVAR) ?: System.getenv().get(ENVVAR).toString() //get config from external location
+grails.config.locations = [ "file:${extConfig}/config.groovy"]
+
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.muhlsoftware.wedding.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.muhlsoftware.wedding.UserRole'
 grails.plugins.springsecurity.authority.className = 'com.muhlsoftware.wedding.Role'
 grails.plugins.springsecurity.successHandler.defaultTargetUrl = "/"
 grails.plugins.springsecurity.controllerAnnotations.staticRules = [
-	'/securityInfo/**': ['ROLE_ADMIN'],
-	'/role/**': ['ROLE_ADMIN'],
-	'/aclclass/**': ['ROLE_ADMIN'],
-	'/aclentry/**': ['ROLE_ADMIN'],
-	'/aclobjectidentity/**': ['ROLE_ADMIN'], 
-	'/aclSid/**': ['ROLE_ADMIN'],
-	'/persistentLogin/**': ['ROLE_ADMIN'],
-	'/register/**': ['ROLE_ADMIN'],
-	'/registrationCode/**': ['ROLE_ADMIN'],
-	'/dbdoc/**': ['ROLE_ADMIN'],
-	'/requestmap/**': ['ROLE_ADMIN'],
-	'/user/**': ['ROLE_ADMIN']
+	'/securityInfo/**': ['ROLE_SUPER_USER'],
+	'/role/**': ['ROLE_SUPER_USER'],
+	'/aclclass/**': ['ROLE_SUPER_USER'],
+	'/aclentry/**': ['ROLE_SUPER_USER'],
+	'/aclobjectidentity/**': ['ROLE_SUPER_USER'], 
+	'/aclSid/**': ['ROLE_SUPER_USER'],
+	'/persistentLogin/**': ['ROLE_SUPER_USER'],
+	'/register/**': ['ROLE_SUPER_USER'],
+	'/registrationCode/**': ['ROLE_SUPER_USER'],
+	'/dbdoc/**': ['ROLE_SUPER_USER'],
+	'/requestmap/**': ['ROLE_SUPER_USER'],
+	'/user/**': ['ROLE_CLIENT_ADMIN','ROLE_SUPER_USER']
  ]

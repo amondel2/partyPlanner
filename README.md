@@ -29,6 +29,6 @@ This Tool is easy to use or at least thats the point.
     
     b. Configure your Datasource
 
-    c. run grails run-app or grails war (see http://grails.org/doc/2.2.3/ref/Command%20Line/war.html)
+    c. run grails run-app or grails war (see http://grails.org/doc/2.2.4/ref/Command%20Line/war.html)
    
 

@@ -105,6 +105,13 @@
 			</p>
 			
 			<p>
+				<label for='client'>Client:</label>
+				<select name='client' id='client'>
+					<wed:getClientList />
+				</select>
+			</p>
+			
+			<p>
 				<input type='submit' id="submit" value='${message(code: "springSecurity.login.button")}'/>
 			</p>
 		</form>

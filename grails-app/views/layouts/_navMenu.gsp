@@ -10,7 +10,7 @@
 	<sec:ifNotLoggedIn>
 			<li><g:link controller='login' action='auth'>Login</g:link></li>
 	</sec:ifNotLoggedIn>
-	<sec:ifAllGranted roles="ROLE_ADMIN">
+	<sec:ifAnyGranted roles="ROLE_CLIENT_ADMIN">
 			<g:if test="${type=='list'}">
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</g:if>
@@ -33,10 +33,13 @@
 					<li><a class="partyuser" href="${createLink(uri: '/partyGuest/')}">Guest Parties</a></li>
 					<li><a class="guests" href="${createLink(uri: '/guest/')}">Guest</a></li>
 					<li><a class="seat" href="${createLink(uri: '/seat/')}">Seats</a></li>
-					<li><a class="tables" href="${createLink(uri: '/wedTable/')}">Tables</a></li>				
+					<li><a class="tables" href="${createLink(uri: '/wedTable/')}">Tables</a></li>	
+					<sec:ifAnyGranted roles="ROLE_SUPER_USER">
+						<li><a class="guests" href="${createLink(uri: '/client/')}">Clients</a></li>
+					</sec:ifAnyGranted>			
 				</ul>
 			</li>
-	</sec:ifAllGranted>
+	</sec:ifAnyGranted>
 	<sec:ifLoggedIn>
 		 <li><a href="${createLink(uri: '/logout/')}">Logout</a></li>
 	</sec:ifLoggedIn>

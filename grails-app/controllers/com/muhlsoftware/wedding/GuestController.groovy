@@ -20,10 +20,24 @@ package com.muhlsoftware.wedding
 import org.springframework.dao.DataIntegrityViolationException
 
 import grails.plugins.springsecurity.Secured
+import com.muhlsoftware.wedding.extralogin.ClientAuthentication
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import pl.touk.excel.export.getters.PropertyGetter
 
-@Secured(['ROLE_ADMIN'])
+
+@Secured(['ROLE_CLIENT_ADMIN'])
 class GuestController {
-
+	def exportService
 	static scaffold = true
     def index() { redirect(action:list) }
+	
+	def exportGuestToExcel() {			
+				ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+				def client = Client.findById(auth.getClientId())				
+				def guests  = Guest.findAllByClient(client)
+				exportService.exportGuestItems(response,guests)
+	}
 }
+
+

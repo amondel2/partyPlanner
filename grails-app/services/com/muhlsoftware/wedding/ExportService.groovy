@@ -14,18 +14,22 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 
-import grails.plugins.springsecurity.Secured
+class ExportService {
 
-
-@Secured(['ROLE_CLIENT_ADMIN'])
-class PartyController {
-	static scaffold = true
-	def index() { redirect(action:list) }
-	def exportService
-	def exportGuestToExcel() {
-
-		def guests = PartyGuest.findAllByParty(Party.findById(params?.id))?.collect{it.guest}.sort{it.lastName}
-
-		exportService.exportGuestItems(response,guests)
+    def getGuestHeader() {
+		return ['First', 'Middle', 'Last', 'Address1', 'Address2', 'City', 'State', 'Zip', 'Phone', 'E-mail','isGuest','party']
+    }
+	
+	def getGuestProperties(){
+		return ['firstName', 'middleName', 'lastName', 'address1', 'address2', 'city', 'state', 'zip', 'phone', 'guestEmail', new IsGuestGetter('isGuest'),new  PartyGetter('parties')]
+    }
+	
+	def exportGuestItems(response,guestArray){
+		new SheetNamedWebXlsxExporter().with {
+			setResponseHeaders(response)
+			fillHeader(this.getGuestHeader())
+			add(guestArray, this.getGuestProperties())
+			save(response.outputStream)
+		}
 	}
 }

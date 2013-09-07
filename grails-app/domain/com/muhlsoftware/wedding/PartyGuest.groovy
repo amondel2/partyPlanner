@@ -24,7 +24,7 @@ class PartyGuest {
 		autoTimestamp false
 		cache true
 		id generator: 'hilo',
-		   params: [table: 'guest_hi_value', column: 'next_value', max_lo: 1]
+		   params: [table: 'party_guest_hi_value', column: 'next_value', max_lo: 1]
 	}
 	
 	static belongsTo = [party:Party,guest:Guest]

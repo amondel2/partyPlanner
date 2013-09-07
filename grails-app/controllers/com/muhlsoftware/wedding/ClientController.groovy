@@ -14,18 +14,12 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 
+import org.springframework.dao.DataIntegrityViolationException
+
 import grails.plugins.springsecurity.Secured
 
-
-@Secured(['ROLE_CLIENT_ADMIN'])
-class PartyController {
-	static scaffold = true
-	def index() { redirect(action:list) }
-	def exportService
-	def exportGuestToExcel() {
-
-		def guests = PartyGuest.findAllByParty(Party.findById(params?.id))?.collect{it.guest}.sort{it.lastName}
-
-		exportService.exportGuestItems(response,guests)
-	}
+@Secured(['ROLE_SUPER_USER'])
+class ClientController {
+    static scaffold = true
+    def index() { redirect(action:list) }
 }

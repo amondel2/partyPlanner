@@ -11,7 +11,12 @@
 		<a href="#list-${domainClass.propertyName}" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<g:render template="../layouts/navMenu" model="[type:'list']" />
 		<div id="list-${domainClass.propertyName}" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			<h1><g:message code="default.list.label" args="[entityName]" />
+			<% if ( domainClass.propertyName == 'guest') { %>
+						<a href="\${resource(file:'',dir:'guest')}/exportGuestToExcel" target="_blank">Export All Guest To Excel</a>
+			<% }  %>
+			
+			</h1>
 			<g:if test="\${flash.message}">
 			<div class="message" role="status">\${flash.message}</div>
 			</g:if>
@@ -29,6 +34,9 @@
 					<%      } else { %>
 						<g:sortableColumn property="${p.name}" title="\${message(code: '${domainClass.propertyName}.${p.name}.label', default: '${p.naturalName}')}" />
 					<%  }   }   } %>
+					<% if ( domainClass.propertyName == 'party') { %>
+						<th>Action</th>
+					<% }  %>
 					</tr>
 				</thead>
 				<tbody>
@@ -44,7 +52,11 @@
 						<td><g:formatDate date="\${${propertyName}.${p.name}}" /></td>
 					<%          } else { %>
 						<td>\${fieldValue(bean: ${propertyName}, field: "${p.name}")}</td>
-					<%  }   }   } %>
+					<%  }   }   }		
+					%>
+					<% if ( domainClass.propertyName == 'party') { %>
+						<td><a href="\${resource(file:'',dir:'party')}/exportGuestToExcel/\${${propertyName}.id}" target="_blank">Export To Excel</a></td>
+					<% }  %>
 					</tr>
 				</g:each>
 				</tbody>
