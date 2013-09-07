@@ -25,7 +25,7 @@ This Tool is easy to use or at least thats the point.
     
 2. TO complie and run just run
 
-    a.  This tool is currently running against grail 2.2.3 and jquery 2.0.3 so no support for crappy old ie.
+    a.  This tool is currently running against grail 2.2.4 and jquery 2.0.3 so no support for crappy old ie.
     
     b. Configure your Datasource
 
