@@ -54,7 +54,7 @@ var sortList = function(){
 			$("#guestList").empty();
 			$("#guestList").append(data);
 			$("#guestList .guest").draggable(guestDrag);
-			if($("#fiterAttend").is(":checked")) {
+			if($("#fiterAttend").attr("attrib") == 'on') {
 				showAttending();
 			}
 			quickCounts();
@@ -75,11 +75,17 @@ var tableDrag = {
 		scroll: false,
 		stop: function( event, ui ) {
 			var pos = $("#tableContainer").offset();
+			var maxRight = pos.left + $("#tableContainer").width() - $(this).outerWidth();
+			var maxBottom = pos.top + $("#tableContainer").height() - $(this).outerHeight();
 			if(ui.offset.left < pos.left) {
 				$(this).offset({ top: ui.offset.top, left: pos.left });
-			}
+			} else if( ui.offset.left > maxRight) {
+				$(this).offset({ top: ui.offset.top, left: maxRight });
+			}	
 			if(ui.offset.top < pos.top) {
 				$(this).offset({ top: pos.top, left: $(this).offset().left });
+			} else if( ui.offset.top > maxBottom) {
+				$(this).offset({ top: maxBottom, left: $(this).offset().left });
 			}
 			var tableId = $(this).attr('table');
 			$.ajax({
@@ -133,7 +139,7 @@ var guestDrag= {
 
 $(document).ready(function(){
 	
-	 $( ".fieldSetButtons button" ).button({
+	 $( "#partyPlanMenu button" ).button({
 		 icons: {
 		 primary: "ui-icon-plus "
 		 }
@@ -148,6 +154,8 @@ $(document).ready(function(){
 			 }
 		 }
 	});
+	 
+	 $("#partyPlanMenu").menu({ position: { at: "left bottom" },  icons: { submenu: "ui-icon-triangle-1-s"} });
 	
 	 quickCounts();
 	
@@ -171,6 +179,8 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	
 	
 	
 	$(document.body).on("click","[title='Delete Table']",function(){
@@ -491,12 +501,18 @@ $(document).ready(function(){
 	
 	
 	$("#fiterAttend").on("click",function(){
-		if ($(this).is(':checked')) {
+		if ($(this).attr("attrib") == 'off') {
+			$(this).attr("attrib","on");
+			$(this).text("Show All Guest");
 			showAttending();
 	    } else {
+	    	$(this).attr("attrib","off");
+	    	$(this).text("Show Only Attending Guest");
 	       showAllGuest();
 	    }
 	});
+	
+	
 	
 	
 	$("#sortList").on("click",sortList);

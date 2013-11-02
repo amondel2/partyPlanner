@@ -28,11 +28,33 @@
 <body>
 	<g:render template="../layouts/navMenu" />
 	<div id="guestListFiliters">
-		<input type="checkbox" id="fiterAttend" value="on"><label for="fiterAttend">&nbsp;Show Only Attending Guest</label>
-		<span id="sortList" class="ui-state-default ui-corner-all" title="Sort List"><span class="ui-icon ui-icon-arrowrefresh-1-e"></span><span>Refresh List</span></span>
-		<span>Invited Guest Count:<span id='invitedCount'></span></span>
-		<span>Attending Guest Count:<span id='attendingCount'></span></span>
+		<ul id="partyPlanMenu">
+			<li><a href="#">Action Buttons</a>
+				<ul>
+					<li>
+						<a href="#" id="addTable">Add a Table</a>
+					</li>
+					<li>
+						<a href="#" id="addGuest">Add a Guest</a>
+					</li>
+					<li>
+						<a href="#"  id="fiterAttend" attrib="off">Show Only Attending Guest</a>
+					</li>
+					<li>
+						<a href="#"  id="sortList">Refresh List</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#">Counts</a>
+				<ul>
+					<li><a href="#">Invited Guest Count:<span id='invitedCount'></span></a></li>
+					<li><a href="#">Attending Guest Count:<span id='attendingCount'></span></a></li>
+				</uL>			
+			</li>
+			
+		</ul>
 	</div>
+	
 	<div class="guestTableLayout" id="guestTableConfContainer">
 		<div id="guestList" >
 			<g:render template="guestList" model="[guests:guests]"  />
@@ -44,12 +66,6 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-	<fieldset class="fieldSetButtons">
-		<legend>Action Buttons</legend>
-		<button icon="" id="addTable">Add a Table</button>
-		<button icon="" id="addGuest">Add a Guest</button>
-	</fieldset>
-	
 	<div id="dialogs">
 		<div id="addTableForm" title="Add a Table">
 			<input type="text" name="tableName" id="tableName" value="" required="required" placeholder="Enter a Name" />

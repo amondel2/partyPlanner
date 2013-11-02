@@ -5,9 +5,9 @@
 
 .guestTableLayout > div {
 	float:left;
-	height:850px;
+	height:860px;
 	width: 845px;
-	overflow:scroll; 
+	
 }
 
 
@@ -15,9 +15,11 @@
 .guestTableLayout > div:FIRST-CHILD {
 	float:left;
 	width:275px;
+	overflow:scroll; 
 }
 
 .table {
+	position:absolute;
 	min-height:100px;
 	width:275px;
 	border:1px solid black;	
