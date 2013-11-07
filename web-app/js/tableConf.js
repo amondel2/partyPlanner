@@ -282,7 +282,7 @@ $(document).ready(function(){
 				$("#addGuestDi #seat").parent().remove();
 				$("#addGuestDi label[for='partyGuests']").parent().remove();
 				$("#addGuestDi #party").parent().remove();
-				$.each($("#guestList").children(),function(index,value) {
+				$.each($("#tableContainer").children().find(".guest").add($("#guestList").children()),function(index,value) {
 					var guestId = $(value).attr('relgid');
 					$("#addGuestDi #guest option[value='"+guestId+"']").remove();
 				});
