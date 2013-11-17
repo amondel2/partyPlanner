@@ -1,7 +1,7 @@
 package com.muhlsoftware.wedding
 
 class PartyGuest {
-
+	
      static constraints = {
 		party(nullable:false,blank:false,unique:['guest'])
 		guest(nullable:false,blank:false,unique:['party'])
@@ -40,5 +40,6 @@ class PartyGuest {
 	
 	String toString() {
 		return this.party.toString() + ' : ' + this.guest.toString()
-	}	
+	}
+	
 }

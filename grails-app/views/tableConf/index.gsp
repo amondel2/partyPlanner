@@ -49,6 +49,7 @@
 				<ul>
 					<li><a href="#">Invited Guest Count:<span id='invitedCount'></span></a></li>
 					<li><a href="#">Attending Guest Count:<span id='attendingCount'></span></a></li>
+					<li><a href="#">Unique Address Count:<span id='uniqueCount'></span></a></li>
 				</uL>			
 			</li>
 			

@@ -39,6 +39,17 @@ function showAllGuest(){
 function quickCounts(){
 	$("#invitedCount").text($("div[guest]").length);
 	$("#attendingCount").text($("div[attending]").length);
+	$.ajax({
+		url: baseDir + "/TableConf/getAddressCount",
+		type: 'GET',
+		cache: false,
+		success: function(data){
+			$("#uniqueCount").text(data.Count);
+		},
+		error: function(){
+			alert("failBoat")
+		}
+	});
 	
 }
 
