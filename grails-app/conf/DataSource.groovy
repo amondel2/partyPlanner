@@ -12,7 +12,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://<fakse_stuff>?autoreconnect=true"
+            url = "jdbc:mysql://fake_stuff?autoreconnect=true"
 			properties {
 				maxActive = -1
 				minEvictableIdleTimeMillis=1800000
@@ -29,13 +29,14 @@ environments {
     test {
         dataSource {
             dbCreate = "create"
-            url = "jdbc:mysql://<fakse_stuff>?autoreconnect=true"
+            url = "jdbc:mysql://fake_stuff?autoreconnect=true"
         }
     }
     production {
         dataSource {
             dbCreate = "create"
-            url = "jdbc:mysql://<fakse_stuff>?autoreconnect=true"            pooled = true
+            url = "jdbc:mysql://fake_stuff?autoreconnect=true"            
+			pooled = true
             properties {
                maxActive = -1
                minEvictableIdleTimeMillis=1800000
