@@ -59,4 +59,20 @@ class Party {
 		}
 		return res.size()
 	}
+	
+	static Long getGuestCount(Long partyId) {
+		def  c = PartyGuest.createCriteria()
+		def res = c.get{
+			party{
+				eq('id',Long.valueOf(partyId))
+			}
+			guest{
+				eq("isGuest",true)
+			}
+			projections {
+				countDistinct "guest"
+			}
+		}
+		return res
+	}
 }

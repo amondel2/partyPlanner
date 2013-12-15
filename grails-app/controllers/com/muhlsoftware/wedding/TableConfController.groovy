@@ -60,6 +60,17 @@ class TableConfController {
 		}
 		render msg as JSON
 	}
+	
+	def getGuestCount() {
+		def msg
+		try{
+			msg = ['status': 'SUCCESS', "Count" : Party.getGuestCount(Long.valueOf(session['partyId']))]
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
+		
+	}
 
 	def tableDrop(){
 		try{

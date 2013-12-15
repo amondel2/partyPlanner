@@ -20,6 +20,7 @@ package com.muhlsoftware.wedding
 class Guest implements Serializable {
 
     static constraints = {
+		preFix(nullable:true)
 		firstName(nullable:false,blank:false,unique:['middleName','lastName', 'client'])
 		middleName(nullable:true)
 		lastName(nullable:false,blank:false,unique:['middleName','firstName', 'client'])
@@ -47,6 +48,7 @@ class Guest implements Serializable {
 	
 	Long id
 	Client client
+	String preFix
 	String firstName
 	String middleName
 	String lastName

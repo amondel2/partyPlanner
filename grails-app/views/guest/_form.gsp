@@ -1,6 +1,12 @@
 <%@ page import="com.muhlsoftware.wedding.Guest"%>
 
-
+<div
+	class="fieldcontain ${hasErrors(bean: guestInstance, field: 'preFix', 'error')}">
+	<label for="preFix"> <g:message code="guest.preFix.label"
+			default="Pre Fix" />
+	</label>
+	<g:textField name="preFix" value="${guestInstance?.preFix}" />
+</div>
 
 <div
 	class="fieldcontain ${hasErrors(bean: guestInstance, field: 'firstName', 'error')} required">

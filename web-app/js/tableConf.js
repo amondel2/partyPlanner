@@ -50,6 +50,17 @@ function quickCounts(){
 			alert("failBoat")
 		}
 	});
+	$.ajax({
+		url: baseDir + "/TableConf/getGuestCount",
+		type: 'GET',
+		cache: false,
+		success: function(data){
+			$("#guestCount").text(data.Count);
+		},
+		error: function(){
+			alert("failBoat")
+		}
+	});
 	
 }
 

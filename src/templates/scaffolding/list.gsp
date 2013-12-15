@@ -44,7 +44,7 @@
 					<tr class="\${(i % 2) == 0 ? 'even' : 'odd'}">
 					<%  props.eachWithIndex { p, i ->
 							if (i == 0) { %>
-						<td><g:link action="show" id="\${${propertyName}.id}">\${fieldValue(bean: ${propertyName}, field: "${p.name}")}</g:link></td>
+						<td><g:link action="show" id="\${${propertyName}.id}">\${fieldValue(bean: ${propertyName}, field: "${p.name}") ?: "edit"}</g:link></td>
 					<%      } else if (i < 6) {
 								if (p.type == Boolean || p.type == boolean) { %>
 						<td><g:formatBoolean boolean="\${${propertyName}.${p.name}}" /></td>

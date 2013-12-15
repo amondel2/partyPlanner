@@ -26,22 +26,24 @@ class GuestImporter extends AbstractExcelImporter {
 		sheet:'Guests',
 		startRow: 1,
 		columnMap:  [
-				'A':'firstName',
-				'B': 'middleName',
-				'C':'lastName',
-				'D':'address1',
-				'E':'address2',
-				'F':'city',
-				'G':'state',
-				'H':'zip',
-				'I':'phone',
-				'J':'guestEmail',
-				'K':'isGuest',
-				'L' :'party'		
+				'A': 'preFix',
+				'B':'firstName',
+				'C': 'middleName',
+				'D':'lastName',
+				'E':'address1',
+				'F':'address2',
+				'G':'city',
+				'H':'state',
+				'I':'zip',
+				'J':'phone',
+				'K':'guestEmail',
+				'L':'isGuest',
+				'M' :'party'		
 		]
 ]
 	
 	static Map Config_Guest_Type = [
+		preFix:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
 		firstName:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
 		middleName:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
 		lastName:([expectedType: ExpectedPropertyType.StringType, defaultValue:null]),
