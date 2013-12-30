@@ -86,7 +86,7 @@ seat .header > div {
 	width:16px;
 }
 
-.delete-user, .edit-user {
+.delete-user, .edit-user, .moreinfo {
 	float: right;
 }
 

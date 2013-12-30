@@ -168,7 +168,7 @@ $(document).ready(function(){
 	 });
 	 
 	 $( document ).tooltip({
-		 items: ".guest[title]",
+		 items: ".guest span span.moreinfo[title]",
 		 content: function() {
 			 var element = $( this );
 			 if ( element.is( "[title]" ) ) {
