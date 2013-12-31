@@ -15,11 +15,17 @@ var seatDropable = {
         	$(ui.draggable).appendTo( this );
         	var seatId = $(this).attr('seat');
         	var guestId = $(ui.draggable).attr('guest');
-    		$.ajax({
+        	if(seatDropajax[seatId]) {
+        		seatDropajax[seatId].abort();
+        	}
+        	seatDropajax[seatId] = $.ajax({
     			url: baseDir + "/TableConf/sitDown",
     			type: 'POST',
     			cache: false,
     			data: {"seatId":seatId,'guestId':guestId},
+    			complete: function() {
+    				seatDropajax[seatId] = null;
+    			},
     			error: function(){
     				alert("failBoat")
     			}
@@ -27,6 +33,7 @@ var seatDropable = {
         }
     };
 
+var tableDropajax=[],seatDropajax =[],GuestDropajax = [];
 
 function showAttending(){
 	$("#guestList > div").css("display","none");
@@ -110,10 +117,16 @@ var tableDrag = {
 				$(this).offset({ top: maxBottom, left: $(this).offset().left });
 			}
 			var tableId = $(this).attr('table');
-			$.ajax({
+			if(tableDropajax[tableId]) {
+				tableDropajax[tableId].abort();
+        	}
+			tableDropajax[tableId] = $.ajax({
 				url: baseDir + "/TableConf/tableDrop",
     			type: 'POST',
     			cache: false,
+    			complete: function() {
+    				tableDropajax[tableId] = null;
+    			},
     			data: {"tableId":tableId,"top":$(this).offset().top,"left":$(this).offset().left},
     			error: function(){
     				alert("failBoat")
@@ -159,7 +172,19 @@ var guestDrag= {
 		}
 	};
 
+function tableConfWidth() {
+	//figure out table width the extra one is for rounding errors with pixels to prevant wrapping!
+	$("#tableContainer").width($("#guestTableConfContainer").innerWidth() - $("#guestList").outerWidth(true) - 1);
+	
+}
+
 $(document).ready(function(){
+	
+	$( window ).on("resize",function(){
+		tableConfWidth();
+	});
+	
+	tableConfWidth();
 	
 	 $( "#partyPlanMenu button" ).button({
 		 icons: {
@@ -487,12 +512,20 @@ $(document).ready(function(){
 		buttons: {
 		 "Create Table": function() {
 			 var tn = $.trim($("#tableName").val());
-			 if(tn && tn.length > 0) {
+			 var seatnumber = 0;
+			 try {
+				 seatnumber = $.trim($("#seatTotal").val());
+				 seatnumber = parseInt(seatnumber);
+			 } catch (e) {
+				 seatnumber = 0;
+			 }
+			 
+			 if(tn && tn.length > 0 && seatnumber > 0) {
 			 $.ajax({
 				 	cache: false,
 					url: baseDir + "/TableConf/addTable",
 					type: 'POST',
-					data: {"tableName":tn},
+					data: {"tableName":tn,"seatTotal":seatnumber},
 					success: function(data){
 						$("#tableContainer").append(data);
 						$(".table").draggable(tableDrag);
@@ -504,7 +537,7 @@ $(document).ready(function(){
 					}
 				});
 			 } else {
-				 alert("Enter a name");
+				 alert("Enter a name and the number of seats");
 			 }
 		 	},
 		 	Cancel: function() {

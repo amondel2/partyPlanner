@@ -158,8 +158,24 @@ class TableConfService {
 		}
 		return "success"
 	}
-	
-	
+	def addSeatToTable(params) {
+		def table = WedTable.findById(params?.tableId)
+		addSeatToTable(params,table)
+	}
+
+	def addSeatToTable(params,table) {
+		def s
+		Seat.withTransaction { status ->
+			s = new Seat()
+			def seats = table?.seats?.sort{b,a -> a.seatNumber <=> b.seatNumber}
+			s.seatNumber = seats?.get(0)?.seatNumber + 1 ?: 1
+			s.wedTable = table
+			s.save(flush:true,failOnError:true)
+		}
+		s
+	}
+
+
 	def editTableName(tableId,tableName) {
 		WedTable wedT = WedTable.findById(tableId)
 		if(!wedT) {

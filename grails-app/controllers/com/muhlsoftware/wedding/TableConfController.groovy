@@ -14,6 +14,7 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 import org.codehaus.groovy.grails.commons.GrailsClassUtils
+import org.grails.datastore.mapping.collection.PersistentSet
 import org.junit.internal.runners.statements.FailOnTimeout;
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
@@ -95,16 +96,7 @@ class TableConfController {
 	}
 
 	def addSeat() {
-		def table = WedTable.findById(params?.tableId)
-		def s
-		Seat.withTransaction { status ->
-			s = new Seat()
-			def seats = table?.seats?.sort{b,a -> a.seatNumber <=> b.seatNumber}
-			s.seatNumber = seats?.get(0)?.seatNumber + 1 ?: 1
-			s.wedTable = table
-			s.save(flush:true,failOnError:true)
-		}
-		render (template :"seat",model:[s:s])
+		render (template :"seat",model:[s:tableConfService.addSeatToTable(params)])
 	}
 
 	def delSeat() {
@@ -159,14 +151,24 @@ class TableConfController {
 		def t = new WedTable()
 		def p = Party.findById(session['partyId'])
 		t.name = params?.tableName
+		t.party = p
 		def s = new Seat()
 		s.seatNumber = 1
 		s.wedTable = t
 		t.party = p
 		t.seats = [s]
+		def seatList = [s]
 		t.save(flush: true,failOnError:true)
 		s.save(flust:true,failOnError:true)
-		render (template :"table",model:[t:t])
+		def c = 2
+		def totalSeats = params.seatTotal?.toInteger()
+		while(c++ <= totalSeats) {
+			def s2 = tableConfService.addSeatToTable(params,t)
+			t.seats.add(s2)
+			seatList.add(s2)
+		}
+		t.seats =  seatList.sort{a,b -> a.seatNumber < b.seatNumber ? 0 : 1 }
+		render (template :"table",model:[t:t,seatList:seatList])
 	}
 	
 	def editTableName(){

@@ -28,7 +28,7 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-	<g:each in="${t?.seats?.sort{a,b -> a.seatNumber < b.seatNumber ? 0 : 1 }}" var='s'>
+	<g:each in="${seatList ?: (t?.seats?.sort{a,b -> a.seatNumber < b.seatNumber ? 0 : 1})}" var='s'>
 		<g:render template="seat" model="[s:s]"  />
 	</g:each>
 </div>

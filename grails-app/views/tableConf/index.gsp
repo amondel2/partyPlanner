@@ -71,6 +71,7 @@
 	<div id="dialogs">
 		<div id="addTableForm" title="Add a Table">
 			<input type="text" name="tableName" id="tableName" value="" required="required" placeholder="Enter a Name" />
+			<input type="number" min="1" step="1" pattern="\d+" name="seatTotal" id="seatTotal" value="" required="required" placeholder="Enter The Number of Seats" />
 		</div>
 		<div id="editTableForm" title="Edit a Table">
 			<input type="hidden" name="tableId" id="editDialTableId" value="">
