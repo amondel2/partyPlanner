@@ -1,4 +1,4 @@
-grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
+grails.servlet.version = "3.0" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -10,12 +10,13 @@ grails.project.source.level = 1.6
 //grails.project.fork = [
 //   run: [maxMemory:1024, minMemory:64, debug:false, maxPerm:256]
 //]
-
+grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
+		excludes 'xercesImpl'
     }
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
@@ -52,15 +53,16 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ":hibernate:$grailsVersion"
         runtime ":resources:1.1.6"
 		compile ":joda-time:1.4"
-		compile (":excel-import:1.0.0"){ excludes "xmlbeans"}
-		compile ":excel-export:0.1.6"
+
+		compile ":excel-import:1.0.0"
+		compile ":excel-export:0.1.10"
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.5"
+		compile ':scaffolding:1.0.0'
 		compile ":spring-security-core:1.2.7.3"
 		compile ":spring-security-acl:1.1.1"
 		compile ":spring-security-appinfo:1.0"
@@ -69,7 +71,8 @@ grails.project.dependency.resolution = {
 		compile ":jquery-ui:1.8.24" //for spring security ( I am using 1.10.x in the app)
 		runtime ":jquery:1.8.3"  //for spring security ( I am using 2.x in the app)
 		compile ":famfamfam:1.0.1"
-        build ":tomcat:$grailsVersion"
+        build ':tomcat:7.0.47'
+		runtime ':hibernate:3.6.10.6'
 
         runtime ":database-migration:1.3.2"
 

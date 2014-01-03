@@ -14,6 +14,8 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 
+import pl.touk.excel.export.WebXlsxExporter
+
 class ExportService {
 
     def getGuestHeader() {
@@ -25,7 +27,7 @@ class ExportService {
     }
 	
 	def exportGuestItems(response,guestArray){
-		new SheetNamedWebXlsxExporter().with {
+		new WebXlsxExporter().with {
 			setResponseHeaders(response)
 			fillHeader(this.getGuestHeader())
 			add(guestArray, this.getGuestProperties())
