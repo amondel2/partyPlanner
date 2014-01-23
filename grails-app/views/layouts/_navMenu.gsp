@@ -33,6 +33,7 @@
 					<li><a class="partyuser" href="${createLink(uri: '/partyGuest/')}">Guest Parties</a></li>
 					<li><a class="guests" href="${createLink(uri: '/guest/')}">Guest</a></li>
 					<li><a class="seat" href="${createLink(uri: '/seat/')}">Seats</a></li>
+					<li><a class="entree" href="${createLink(uri: '/partyEntree/')}">Party Entree</a></li>
 					<li><a class="tables" href="${createLink(uri: '/wedTable/')}">Tables</a></li>	
 					<sec:ifAnyGranted roles="ROLE_SUPER_USER">
 						<li><a class="guests" href="${createLink(uri: '/client/')}">Clients</a></li>

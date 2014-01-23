@@ -43,6 +43,11 @@ function showAllGuest(){
 	$("#guestList > div").css("display","block");
 }
 
+function showNotResponded(){
+	$("#guestList > div").css("display","none");
+	$("#guestList > :not(div[attending='attend'])").css("display","block");
+}
+
 function quickCounts(){
 	$("#invitedCount").text($("div[guest]").length);
 	$("#attendingCount").text($("div[attending]").length);
@@ -68,6 +73,23 @@ function quickCounts(){
 			alert("failBoat")
 		}
 	});
+	$.ajax({
+		url: baseDir + "/TableConf/getEntreeCount",
+		type: 'GET',
+		cache: false,
+		success: function(data){
+			if(data.status == "SUCCESS") {
+				$.each(data.Count,function(i,v){
+					var entreeData = v[1]
+					$("#entree_" + entreeData.id).text(v[0]);
+				});
+			}	
+		},
+		error: function(){
+			alert("failBoat")
+		}
+	});
+	
 	
 }
 

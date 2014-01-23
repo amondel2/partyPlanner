@@ -1,10 +1,13 @@
 dataSource {
     pooled = true
     driverClassName = "com.mysql.jdbc.Driver"
+//	driverClassName = "org.postgresql.Driver"
+//	dialect = org.hibernate.dialect.PostgreSQLDialect
+	dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
 }
 hibernate {
-    cache.use_second_level_cache = false
-    cache.use_query_cache = false
+    cache.use_second_level_cache = true
+    cache.use_query_cache = true
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
 }
 // environment specific settings
@@ -21,7 +24,7 @@ environments {
 				testOnBorrow=true
 				testWhileIdle=true
 				testOnReturn=true
-				validationQuery="SELECT now()"
+				validationQuery="SELECT 1"
 			 }
 			
         }

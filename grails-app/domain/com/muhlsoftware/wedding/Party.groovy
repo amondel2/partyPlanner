@@ -19,7 +19,7 @@ class Party {
 	
 	static transients = ["uniqueAddress"]
 	static belongsTo = [client:Client]
-	static hasMany = [wedTables:WedTable,partyGuests:PartyGuest]
+	static hasMany = [wedTables:WedTable,partyGuests:PartyGuest,partyEntrees:PartyEntree]
 
 	Long id
 	String name
@@ -57,7 +57,7 @@ class Party {
 			}
 
 		}
-		return res.size()
+		return res?.size() ?: 0
 	}
 	
 	static Long getGuestCount(Long partyId) {

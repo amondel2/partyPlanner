@@ -138,7 +138,7 @@ img {
 
 
 .ui-menu-item a.home, .ui-menu-item a.list, .ui-menu-item a.create,.ui-menu-item a.admin,.ui-menu-item a.seat,
-.ui-menu-item a.tables,.ui-menu-item a.guests,.ui-menu-item a.partyTime,.ui-menu-item a.party,.ui-menu-item a.partyuser  {
+.ui-menu-item a.tables,.ui-menu-item a.guests,.ui-menu-item a.partyTime,.ui-menu-item a.party,.ui-menu-item a.partyuser,.ui-menu-item a.entree  {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
@@ -173,6 +173,10 @@ img {
 }
 
 .ui-menu-item a.partyuser {
+	background-image: url(../images/skin/party-smiley.gif);
+}
+
+.ui-menu-item a.entree{
 	background-image: url(../images/skin/party-smiley.gif);
 }
 

@@ -5,6 +5,7 @@ class PartyGuest {
      static constraints = {
 		party(nullable:false,blank:false,unique:['guest'])
 		guest(nullable:false,blank:false,unique:['party'])
+		entree(nullable:true)
 		entreeChoice(nullable:true)
 		gift(nullable:true)
 		thankYouCardSent(nullable:true)
@@ -27,12 +28,13 @@ class PartyGuest {
 		   params: [table: 'party_guest_hi_value', column: 'next_value', max_lo: 1]
 	}
 	
-	static belongsTo = [party:Party,guest:Guest]
+	static belongsTo = [party:Party,guest:Guest,entree:PartyEntree]
 	
 	Long id
 	Party party
 	Guest guest
 	String entreeChoice
+	PartyEntree entree
 	String gift
 	Boolean thankYouCardSent
 	Boolean isAttending

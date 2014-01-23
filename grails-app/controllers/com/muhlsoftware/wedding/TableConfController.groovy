@@ -28,8 +28,10 @@ class TableConfController {
 		def partyId = Long.valueOf(params?.id)
 		session['partyId'] = partyId
 		def results = tableConfService.getSortedGuestList(Long.valueOf(session['partyId']))
-		def tables = Party.findById(partyId)?.wedTables
-		render (view:"index",model:[tables:tables,guests:results,partyId:partyId])
+		Party party = Party.findById(partyId)
+		def tables = party?.wedTables
+		def entrees = party?.partyEntrees
+		render (view:"index",model:[tables:tables,guests:results,partyId:partyId,entrees:entrees])
 	}
 
 	def getListSort(){
@@ -55,7 +57,8 @@ class TableConfController {
 	def getAddressCount(){
 		def msg
 		try{ 
-			msg = ['status': 'SUCCESS', "Count" : Party.getUniqueAddress(Long.valueOf(session['partyId']))]
+			def countMe = Party.getUniqueAddress(Long.valueOf(session['partyId']))
+			msg = ['status': 'SUCCESS', "Count" : countMe]
 		} catch(Exception e) {
 			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
 		}
@@ -71,6 +74,16 @@ class TableConfController {
 		}
 		render msg as JSON
 		
+	}
+	
+	def getEntreeCount() {
+		def msg
+		try{
+			msg = ['status': 'SUCCESS', "Count" : tableConfService.getEntreeCount(Long.valueOf(session['partyId']))]
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
 	}
 
 	def tableDrop(){

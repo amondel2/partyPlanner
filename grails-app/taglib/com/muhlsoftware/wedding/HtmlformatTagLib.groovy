@@ -31,9 +31,9 @@ class HtmlformatTagLib {
 		 
 		 if(g && g?.firstName) {
 			if (pg?.isAttending) {
-				str = ' IS COMMING AND EATING ' + pg.entreeChoice
+				str = ' IS COMING AND EATING ' + pg?.entree?.toString()
 		 	} else {
-				str = ' NOT COMMING ' 
+				str = ' NOT COMING ' 
 		    } 
 			str += '<br>'
 			if(g?.address1 || g?.address2  ) {

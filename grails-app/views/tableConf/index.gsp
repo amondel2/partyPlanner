@@ -51,6 +51,9 @@
 					<li><a href="#">Attending Guest Count:<span id='attendingCount'></span></a></li>
 					<li><a href="#">Unique Address Count:<span id='uniqueCount'></span></a></li>
 					<li><a href="#">Guest Count:<span id='guestCount'></span></a></li>
+					<g:each in="${entrees}" var="entree">
+						<li><a href="#">${entree.entreeName} Count:<span cost='${entree.cost}' id='entree_${entree.id}'></span></a></li>
+					</g:each>
 				</uL>			
 			</li>
 			
