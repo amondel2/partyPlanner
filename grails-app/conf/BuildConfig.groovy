@@ -69,7 +69,7 @@ grails.project.dependency.resolution = {
 		compile ":joda-time:1.4"
 
 		compile ":excel-import:1.0.0"
-		compile ":excel-export:0.1.10"
+		compile ":excel-export:0.2.0"
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"

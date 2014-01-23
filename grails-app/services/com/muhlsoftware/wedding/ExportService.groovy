@@ -27,7 +27,10 @@ class ExportService {
     }
 	
 	def exportGuestItems(response,guestArray){
-		new WebXlsxExporter().with {
+		
+		WebXlsxExporter webXlsxExporter = new WebXlsxExporter()
+		webXlsxExporter.setWorksheetName("guests")
+		webXlsxExporter.with {	
 			setResponseHeaders(response)
 			fillHeader(this.getGuestHeader())
 			add(guestArray, this.getGuestProperties())
