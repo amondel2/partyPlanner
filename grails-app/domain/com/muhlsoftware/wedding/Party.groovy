@@ -31,7 +31,7 @@ class Party {
 
 	static Long getUniqueAddress(Long partyId) {
 		def  c = PartyGuest.createCriteria()
-		def res = c.listDistinct{
+		def res = c.list{
 
 			party{
 				eq('id',Long.valueOf(partyId))
