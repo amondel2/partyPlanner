@@ -41,6 +41,9 @@
 						<a href="#"  id="fiterAttend" attrib="off">Show Only Attending Guest</a>
 					</li>
 					<li>
+						<a href="#"  id="fiterResponded" attrib="off">Show Guest Who Have Not Responded</a>
+					</li>
+					<li>
 						<a href="#"  id="sortList">Refresh List</a>
 					</li>
 				</ul>
@@ -54,6 +57,7 @@
 					<g:each in="${entrees}" var="entree">
 						<li><a href="#">${entree.entreeName} Count:<span cost='${entree.cost}' id='entree_${entree.id}'></span></a></li>
 					</g:each>
+					<li><a href="#">Total Food Cost: $<span id="totalCost"></span></a></li>
 				</uL>			
 			</li>
 			

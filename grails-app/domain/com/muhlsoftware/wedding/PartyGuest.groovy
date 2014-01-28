@@ -6,7 +6,6 @@ class PartyGuest {
 		party(nullable:false,blank:false,unique:['guest'])
 		guest(nullable:false,blank:false,unique:['party'])
 		entree(nullable:true)
-		entreeChoice(nullable:true)
 		gift(nullable:true)
 		thankYouCardSent(nullable:true)
 		isAttending(nullable:true)
@@ -33,7 +32,6 @@ class PartyGuest {
 	Long id
 	Party party
 	Guest guest
-	String entreeChoice
 	PartyEntree entree
 	String gift
 	Boolean thankYouCardSent

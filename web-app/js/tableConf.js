@@ -35,13 +35,15 @@ var seatDropable = {
 
 var tableDropajax=[],seatDropajax =[],GuestDropajax = [];
 
+function showAllGuest(){
+	$("#guestList > div").css("display","block");
+}
+
 function showAttending(){
 	$("#guestList > div").css("display","none");
 	$("#guestList > div[attending='attend']").css("display","block");
 }
-function showAllGuest(){
-	$("#guestList > div").css("display","block");
-}
+
 
 function showNotResponded(){
 	$("#guestList > div").css("display","none");
@@ -79,11 +81,15 @@ function quickCounts(){
 		cache: false,
 		success: function(data){
 			if(data.status == "SUCCESS") {
+				var tc=0;
 				$.each(data.Count,function(i,v){
 					var entreeData = v[1]
 					$("#entree_" + entreeData.id).text(v[0]);
+					tc += parseInt(v[0]) * parseFloat(entreeData.cost);
 				});
+				$("#totalCost").text(tc)
 			}	
+			
 		},
 		error: function(){
 			alert("failBoat")
@@ -107,7 +113,10 @@ var sortList = function(){
 			$("#guestList .guest").draggable(guestDrag);
 			if($("#fiterAttend").attr("attrib") == 'on') {
 				showAttending();
+			} else if($("#fiterResponded").attr("attrib") == 'on') {
+				showNotResponded();
 			}
+			
 			quickCounts();
 			$("#guestList").scrollTop(scrolTop);
 		},
@@ -576,8 +585,23 @@ $(document).ready(function(){
 		$(v).offset({top:$(v).attr('top'),left:$(v).attr('left')});
 	});
 	
-	
+	 $("#fiterResponded").on("click",function(){
+		 	$("#fiterAttend").attr("attrib","off");
+			$("#fiterAttend").text("Show Only Attending Guest");
+			if ($(this).attr("attrib") == 'off') {
+				$(this).attr("attrib","on");
+				$(this).text("Show All Guest");
+				showNotResponded();
+		    } else {
+		    	$(this).attr("attrib","off");
+		    	$(this).text("Show Guest Who Have Not Responded");
+		       showAllGuest();
+		    }
+		});
+
 	$("#fiterAttend").on("click",function(){
+		$("#fiterResponded").attr("attrib","off");
+		$("#fiterResponded").text("Show Guest Who Have Not Responded");
 		if ($(this).attr("attrib") == 'off') {
 			$(this).attr("attrib","on");
 			$(this).text("Show All Guest");
