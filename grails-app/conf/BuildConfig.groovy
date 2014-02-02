@@ -2,8 +2,8 @@ grails.servlet.version = "3.0" // Change depending on target container complianc
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
-grails.project.target.level = 1.6
-grails.project.source.level = 1.6
+grails.project.target.level = 1.7
+grails.project.source.level = 1.7
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 // uncomment (and adjust settings) to fork the JVM to isolate classpaths
@@ -15,7 +15,7 @@ forkConfig = [maxMemory: 2048, minMemory: 128, debug: false, maxPerm: 512]
 debugConfig = [maxMemory: 2048, minMemory: 128, debug: true, maxPerm: 512]
 grails.project.fork = [
    test: forkConfig, // configure settings for the test-app JVM
-   run: debugConfig, // configure settings for the run-app JVM
+   run: forkConfig, // configure settings for the run-app JVM
    war: forkConfig, // configure settings for the run-war JVM
    console: debugConfig // configure settings for the Swing console JVM
 ]

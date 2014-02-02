@@ -18,6 +18,8 @@ class PartyEntree {
 	
 	static belongsTo = [party:Party]
 	
+	static hasMany = [partyGuests:PartyGuest,partyVendors:PartyVendor]
+	
 	Long id
 	Party party
 	String entreeName

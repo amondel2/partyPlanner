@@ -31,7 +31,8 @@ class TableConfController {
 		Party party = Party.findById(partyId)
 		def tables = party?.wedTables
 		def entrees = party?.partyEntrees
-		render (view:"index",model:[tables:tables,guests:results,partyId:partyId,entrees:entrees])
+		def vendors = party?.partyVendors
+		render (view:"index",model:[tables:tables,guests:results,partyId:partyId,entrees:entrees,vendors:vendors])
 	}
 
 	def getListSort(){
@@ -79,7 +80,29 @@ class TableConfController {
 	def getEntreeCount() {
 		def msg
 		try{
-			msg = ['status': 'SUCCESS', "Count" : tableConfService.getEntreeCount(Long.valueOf(session['partyId']))]
+			Party party = Party.findById(Long.valueOf(session['partyId']))
+			def vendorFood = 0;
+			party?.partyVendors.each{
+				vendorFood += it.getMealCost()
+			}
+			msg = ['status': 'SUCCESS', "Count" : tableConfService.getEntreeCount(Long.valueOf(session['partyId'])),"vendorFoodCost":vendorFood]
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
+	}
+	
+	def getVendorCost(){
+		def msg
+		try{
+			Party party = Party.findById(Long.valueOf(session['partyId']))
+			def vendorCost = 0
+			def vedorPaid = 0
+			party?.partyVendors.each{
+				vendorCost += ( it.cost ?: 0 )
+				vedorPaid +=  ( it.paid ?: 0 )
+			}
+			msg = ['status': 'SUCCESS', "vedorPaid" : vedorPaid,"vendorCost":vendorCost]
 		} catch(Exception e) {
 			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
 		}

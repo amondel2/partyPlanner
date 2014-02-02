@@ -50,6 +50,27 @@ function showNotResponded(){
 	$("#guestList > :not(div[attending='attend'])").css("display","block");
 }
 
+function getVendorCount(foodCost){
+	$.ajax({
+		url: baseDir + "/TableConf/getVendorCost",
+		type: 'GET',
+		cache: false,
+		success: function(dataSub){
+			if(dataSub.status == "SUCCESS") {
+				var tc=parseFloat(dataSub.vendorCost) + foodCost;
+				var tp=tc - parseFloat(dataSub.vedorPaid);
+				$("#vendorTotalCost").text(tc);
+				$("#vendorTotalOwed").text(tp);
+				$("#vendorTotalPaid").text(parseFloat(dataSub.vedorPaid));
+			}	
+			
+		},
+		error: function(){
+			alert("failBoat");
+		}
+	});
+}
+
 function quickCounts(){
 	$("#invitedCount").text($("div[guest]").length);
 	$("#attendingCount").text($("div[attending]").length);
@@ -81,18 +102,19 @@ function quickCounts(){
 		cache: false,
 		success: function(data){
 			if(data.status == "SUCCESS") {
-				var tc=0;
+				var tc=parseFloat(data.vendorFoodCost);
 				$.each(data.Count,function(i,v){
 					var entreeData = v[1]
 					$("#entree_" + entreeData.id).text(v[0]);
 					tc += parseInt(v[0]) * parseFloat(entreeData.cost);
 				});
-				$("#totalCost").text(tc)
+				$("#totalCost").text(tc);
+				getVendorCount(tc);
 			}	
 			
 		},
 		error: function(){
-			alert("failBoat")
+			alert("failBoat");
 		}
 	});
 	

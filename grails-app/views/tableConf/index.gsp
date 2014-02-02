@@ -20,9 +20,9 @@
  %>
 <html>
 	<head>
+		<link  rel="stylesheet" href="${resource(dir: 'css', file: 'tableConf.css')}" type="text/css">
 		<meta name="layout" content="main"/>
 		<g:javascript src="tableConf.js"/>
-		<link  rel="stylesheet" href="${resource(dir: 'css', file: 'tableConf.css')}" type="text/css">
 		<title>Plan Your Party</title>
 	</head>
 <body>
@@ -55,12 +55,18 @@
 					<li><a href="#">Unique Address Count:<span id='uniqueCount'></span></a></li>
 					<li><a href="#">Guest Count:<span id='guestCount'></span></a></li>
 					<g:each in="${entrees}" var="entree">
-						<li><a href="#">${entree.entreeName} Count:<span cost='${entree.cost}' id='entree_${entree.id}'></span></a></li>
+						<li><a href="#">${entree.entreeName} Count:<span cost='${entree.cost}' id='entree_${entree.id}'>0</span></a></li>
 					</g:each>
-					<li><a href="#">Total Food Cost: $<span id="totalCost"></span></a></li>
 				</uL>			
 			</li>
-			
+			<li><a href="#">Money</a>
+				<ul>
+					<li><a href="#">Total Food Cost: $<span id="totalCost"></span></a></li>
+					<li><a href="#">Total Wedding Cost: $<span id='vendorTotalCost'></span></a></li>
+					<li><a href="#">Total Amount Paid: $<span id='vendorTotalPaid'></span></a></li>
+					<li><a href="#">Total Amount Owed: $<span id='vendorTotalOwed'></span></a></li>
+				</uL>			
+			</li>
 		</ul>
 	</div>
 	

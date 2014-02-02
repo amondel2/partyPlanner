@@ -19,7 +19,7 @@ class Party {
 	
 	static transients = ["uniqueAddress"]
 	static belongsTo = [client:Client]
-	static hasMany = [wedTables:WedTable,partyGuests:PartyGuest,partyEntrees:PartyEntree]
+	static hasMany = [wedTables:WedTable,partyGuests:PartyGuest,partyEntrees:PartyEntree,partyVendors:PartyVendor]
 
 	Long id
 	String name
