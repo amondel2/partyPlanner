@@ -123,7 +123,7 @@ function quickCounts(){
 
 
 
-var sortList = function(){
+var sortList = function(quickCounts){
 	$.ajax({
 		url: baseDir + "/TableConf/getListSort",
 		type: 'GET',
@@ -138,8 +138,9 @@ var sortList = function(){
 			} else if($("#fiterResponded").attr("attrib") == 'on') {
 				showNotResponded();
 			}
-			
-			quickCounts();
+			if(quickCounts) {
+				quickCounts();
+			}
 			$("#guestList").scrollTop(scrolTop);
 		},
 		error: function(){
@@ -214,7 +215,7 @@ var guestDrag= {
 	    			data: {'guestId':guestId},
 	    			success: function() {
 	    				elm.remove();
-	    				sortList();
+	    				sortList(false);
 	    			},
 	    			error: function(){
 	    				elm.css("display","block");
@@ -305,6 +306,19 @@ $(document).ready(function(){
 		$("#editTableForm").dialog('open');
 	});
 	
+	$(document.body).on("click","[tableFullMode]",function(){ 
+		var parent = $(this).parent().parent();
+		$(parent).siblings(".fullMode").css("display","inherit");
+		$(parent).css("display","none");
+	});
+	
+	$(document.body).on("click","[title='Compact Mode']",function(){
+		var parent = $(this).parentsUntil('.fullMode').parent('.fullMode');
+		$(parent).siblings(".minMode").css("display","inherit");
+		$(parent).css("display","none");
+	});
+	
+	
 	$(document.body).on("click","[title='Edit User']",function(){
 		var guestId = $(this).attr('user');
 		var name = $(this).parent().parent().text();
@@ -337,7 +351,7 @@ $(document).ready(function(){
 								data: $("#editGuest form").serialize(),
 								success: function(data){
 									if($("#guest_id_" + guestId).parent().prop('id') == 'guestList') {
-										sortList();
+										sortList(true);
 									} else {
 										$("#guest_id_" + guestId).replaceWith(data);
 										$("#guest_id_" + guestId).draggable(guestDrag);
@@ -402,7 +416,7 @@ $(document).ready(function(){
 								data: $("#addGuestDi form").serialize(),
 								success: function(data){
 									if(data.status == "SUCCESS") {
-										sortList();
+										sortList(true);
 										$("#addGuestDi").dialog( "close" );
 									} else {
 										alert(data.msg)
@@ -445,7 +459,7 @@ $(document).ready(function(){
 					success: function(data){
 						$("#table_" + delTableId).remove();
 						delTableId = null;
-						sortList();
+						sortList(false);
 						$("#tableDrop").dialog('close');
 					},
 					error: function(){
@@ -474,7 +488,7 @@ $(document).ready(function(){
 					success: function(data){
 						$("#seat_" + delSeatId).remove();
 						delSeatId=null
-						sortList();
+						sortList(false);
 						$("#seatDrop").dialog('close');
 					},
 					error: function(){
@@ -504,7 +518,7 @@ $(document).ready(function(){
 						$("#guest_id_" + delGuestId).remove();
 						delGuestId = null
 						$("#guestDrop").dialog('close');
-						sortList();
+						sortList(false);
 					},
 					error: function(){
 						alert("failBoat")
@@ -606,6 +620,8 @@ $(document).ready(function(){
 	$.each($("[top][top != ''][left][left != '']"),function(i,v) {
 		$(v).offset({top:$(v).attr('top'),left:$(v).attr('left')});
 	});
+	
+	
 	
 	 $("#fiterResponded").on("click",function(){
 		 	$("#fiterAttend").attr("attrib","off");
