@@ -40,7 +40,8 @@ body {
 	background: #ffffff;
 	color: #333333;
 	margin: 0 auto;
-	max-width: 1124px;
+	max-width: 1600px;
+	width: 90%;
 	min-width:1124px;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
 	   -moz-box-shadow: 0 0 0.3em #255b17;
@@ -136,43 +137,91 @@ img {
 /* NAVIGATION MENU */
 
 
-.ui-menu-item a.home, .ui-menu-item a.list, .ui-menu-item a.create,.ui-menu-item a.admin,.ui-menu-item a.seat,
-.ui-menu-item a.tables,.ui-menu-item a.guests,.ui-menu-item a.partyTime,.ui-menu-item a.party,.ui-menu-item a.partyuser  {
+.ui-menu-item a.home, .ui-menu-item a.list, .ui-menu-item a.create,.ui-menu-item a.admin,.ui-menu-item a.seat,.ui-menu-item a.login, .ui-menu-item a.logout
+.ui-menu-item a.tables,.ui-menu-item a.guests,.ui-menu-item a.partyTime,.ui-menu-item a.party,.ui-menu-item a.partyuser,.ui-menu-item a.entree,
+.ui-menu-item a.partyVendor  {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
+	text-indent: 0px;
+	
+}
+
+.ui-menu-item a.partyTime,.ui-menu-item a.admin,.ui-menu-item a.guests {
 	text-indent: 25px;
 }
 
-.ui-menu-item a.tables {
-	background-position: 0.1em center;
+.navText {
+	vertical-align:middle;
+	display: inline-block;
 }
 
-.ui-menu-item a.home {
-	background-image: url(../images/skin/house.png);
+.iconSet {
+	vertical-align:middle;
+	background-repeat: no-repeat;
+	background-image: url(../images/skin/NavIcons.png);
+	display: inline-block;
+	width: 16px;
+	height: 16px;
 }
 
-.ui-menu-item a.tables {
-	background-image: url(../images/skin/happy-table-icon.png);
+#menu > li {
+	height: 31px;
 }
 
-.ui-menu-item a.seat {
-	background-image: url(../images/skin/Wood-Chair-icon.png);
+.ui-menu-item a.partyVendor span.iconSet{
+	background-position:-33px -17px;
+	width: 32px;
+	height: 32px;
 }
 
-.ui-menu-item a.list {
-	background-image: url(../images/skin/database_table.png);
+.ui-menu-item a.login span.iconSet{
+	background-position:-48px -49px;
 }
 
-.ui-menu-item a.create {
-	background-image: url(../images/skin/database_add.png);
+.ui-menu-item a.logout span.iconSet{ 
+	background-position:-65px -49px;
 }
 
-.ui-menu-item a.party {
-	background-image: url(../images/skin/party_hat.png);
+.ui-menu-item a.home span.iconSet{
+	background-position: 0px -49px;
 }
 
-.ui-menu-item a.partyuser {
-	background-image: url(../images/skin/party-smiley.gif);
+.ui-menu-item a.tables span.iconSet{
+	background-position:0px -17px;
+	width: 32px;
+	height: 32px;
+}
+
+.ui-menu-item a.seat span.iconSet{
+	background-position:-25px -65px;
+	width: 24px;
+	height: 24px;
+}
+
+.ui-menu-item a.list span.iconSet{
+	background-position:-65px 0px;
+}
+
+.ui-menu-item a.create span.iconSet{
+	background-position:0px 0px;
+	width: 16px;
+	height: 16px;
+}
+
+.ui-menu-item a.party span.iconSet{
+	background-position:-49px -65px;
+	width: 24px;
+	height: 24px;
+}
+
+.ui-menu-item a.partyuser span.iconSet{
+	background-position:0px -65px;
+	width: 24px;
+	height: 24px;
+}
+
+.ui-menu-item a.entree span.iconSet{
+	background-position:-33px -49px;
 }
 
 /* CREATE/EDIT FORMS AND SHOW PAGES */

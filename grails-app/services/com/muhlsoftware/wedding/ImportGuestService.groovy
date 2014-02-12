@@ -14,9 +14,12 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 
+import grails.converters.JSON
+
 class ImportGuestService {
 
     def uploadGuest(client,p) {
+		
 		GuestImporter importer = new GuestImporter();
 		importer.read(p?.getInputStream())
 		def msg=""
@@ -97,4 +100,6 @@ class ImportGuestService {
 			msg += "Nothing to do Rows"
 		}
     }
+	
+	
 }

@@ -14,6 +14,7 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 import org.codehaus.groovy.grails.commons.GrailsClassUtils
+import org.grails.datastore.mapping.collection.PersistentSet
 import org.junit.internal.runners.statements.FailOnTimeout;
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
@@ -27,8 +28,11 @@ class TableConfController {
 		def partyId = Long.valueOf(params?.id)
 		session['partyId'] = partyId
 		def results = tableConfService.getSortedGuestList(Long.valueOf(session['partyId']))
-		def tables = Party.findById(partyId)?.wedTables
-		render (view:"index",model:[tables:tables,guests:results,partyId:partyId])
+		Party party = Party.findById(partyId)
+		def tables = party?.wedTables
+		def entrees = party?.partyEntrees
+		def vendors = party?.partyVendors
+		render (view:"index",model:[tables:tables,guests:results,partyId:partyId,entrees:entrees,vendors:vendors])
 	}
 
 	def getListSort(){
@@ -45,6 +49,60 @@ class TableConfController {
 		def msg
 		try{
 			msg = tableConfService.savePartyGuest(params)
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
+	}
+	
+	def getAddressCount(){
+		def msg
+		try{ 
+			def countMe = Party.getUniqueAddress(Long.valueOf(session['partyId']))
+			msg = ['status': 'SUCCESS', "Count" : countMe]
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
+	}
+	
+	def getGuestCount() {
+		def msg
+		try{
+			msg = ['status': 'SUCCESS', "Count" : Party.getGuestCount(Long.valueOf(session['partyId']))]
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
+		
+	}
+	
+	def getEntreeCount() {
+		def msg
+		try{
+			Party party = Party.findById(Long.valueOf(session['partyId']))
+			def vendorFood = 0;
+			party?.partyVendors.each{
+				vendorFood += it.getMealCost()
+			}
+			msg = ['status': 'SUCCESS', "Count" : tableConfService.getEntreeCount(Long.valueOf(session['partyId'])),"vendorFoodCost":vendorFood]
+		} catch(Exception e) {
+			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
+		}
+		render msg as JSON
+	}
+	
+	def getVendorCost(){
+		def msg
+		try{
+			Party party = Party.findById(Long.valueOf(session['partyId']))
+			def vendorCost = 0
+			def vedorPaid = 0
+			party?.partyVendors.each{
+				vendorCost += ( it.cost ?: 0 )
+				vedorPaid +=  ( it.paid ?: 0 )
+			}
+			msg = ['status': 'SUCCESS', "vedorPaid" : vedorPaid,"vendorCost":vendorCost]
 		} catch(Exception e) {
 			msg = ['status': 'FAILURE', "msg": "Error: " + e.getMessage()]
 		}
@@ -74,16 +132,7 @@ class TableConfController {
 	}
 
 	def addSeat() {
-		def table = WedTable.findById(params?.tableId)
-		def s
-		Seat.withTransaction { status ->
-			s = new Seat()
-			def seats = table?.seats?.sort{b,a -> a.seatNumber <=> b.seatNumber}
-			s.seatNumber = seats?.get(0)?.seatNumber + 1 ?: 1
-			s.wedTable = table
-			s.save(flush:true,failOnError:true)
-		}
-		render (template :"seat",model:[s:s])
+		render (template :"seat",model:[s:tableConfService.addSeatToTable(params)])
 	}
 
 	def delSeat() {
@@ -138,14 +187,24 @@ class TableConfController {
 		def t = new WedTable()
 		def p = Party.findById(session['partyId'])
 		t.name = params?.tableName
+		t.party = p
 		def s = new Seat()
 		s.seatNumber = 1
 		s.wedTable = t
 		t.party = p
 		t.seats = [s]
+		def seatList = [s]
 		t.save(flush: true,failOnError:true)
 		s.save(flust:true,failOnError:true)
-		render (template :"table",model:[t:t])
+		def c = 2
+		def totalSeats = params.seatTotal?.toInteger()
+		while(c++ <= totalSeats) {
+			def s2 = tableConfService.addSeatToTable(params,t)
+			t.seats.add(s2)
+			seatList.add(s2)
+		}
+		t.seats =  seatList.sort{a,b -> a.seatNumber < b.seatNumber ? 0 : 1 }
+		render (template :"table",model:[t:t,seatList:seatList])
 	}
 	
 	def editTableName(){

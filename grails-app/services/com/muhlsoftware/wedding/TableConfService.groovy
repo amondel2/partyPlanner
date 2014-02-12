@@ -33,6 +33,22 @@ class TableConfService {
 			isNull('seat')
 		}
 	}
+	
+	def getEntreeCount(partyId) {
+		def c = PartyGuest.createCriteria()
+		def a = c.list{
+			party{
+				eq('id',partyId)
+			} 
+			isNotNull('entree')
+			
+			projections {
+				count "entree"
+				groupProperty "entree"
+			}
+		}
+		return a
+	}
 
 	def editPartyGuest(params) {
 		def g  = PartyGuest.findById(params?.id)
@@ -40,9 +56,20 @@ class TableConfService {
 			GrailsClassUtils.getPropertiesOfType(PartyGuest,Boolean)?.each{ p->
 				g.putAt(p.name,false)
 			}
+			g.entree = null
 			params?.each{ p ->
 				def name = p.key
-				if(g.hasProperty(name) && name != 'id' && name != 'version') {
+				if (GrailsClassUtils.isPropertyOfType(PartyGuest, name,PartyEntree) ) {
+					def pe = null
+					try{ 
+						pe = PartyEntree.findById(params.entree?.id)
+					} catch (Exception e) {
+
+					}
+					if(pe) {
+						g.entree = pe
+					}			
+				} else if(g.hasProperty(name) && name != 'id' && name != 'version') {
 					def v =  p.value
 					if(GrailsClassUtils.isPropertyOfType(PartyGuest, name,Long)) {
 						v = Long.valueOf(v)
@@ -51,9 +78,9 @@ class TableConfService {
 							v = true
 						}
 						v = Boolean.valueOf(v)
-					}
+					} 
 					g.putAt(name, v)
-				}
+				} 
 			}
 			g.save(flush:true,,failOnError:true)
 		}
@@ -158,8 +185,24 @@ class TableConfService {
 		}
 		return "success"
 	}
-	
-	
+	def addSeatToTable(params) {
+		def table = WedTable.findById(params?.tableId)
+		addSeatToTable(params,table)
+	}
+
+	def addSeatToTable(params,table) {
+		def s
+		Seat.withTransaction { status ->
+			s = new Seat()
+			def seats = table?.seats?.sort{b,a -> a.seatNumber <=> b.seatNumber}
+			s.seatNumber = seats?.get(0)?.seatNumber + 1 ?: 1
+			s.wedTable = table
+			s.save(flush:true,failOnError:true)
+		}
+		s
+	}
+
+
 	def editTableName(tableId,tableName) {
 		WedTable wedT = WedTable.findById(tableId)
 		if(!wedT) {

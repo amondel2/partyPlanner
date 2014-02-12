@@ -18,29 +18,30 @@
 }
 
 .table {
-	min-height:100px;
+	position:absolute;
+	min-height:50px;
 	width:275px;
 	border:1px solid black;	
 	margin: 3px;
 	
 }
 
-.table .header > div, .seat .header > span{
+.table div.fullMode .header > div, .seat .header > span{
 	float:right;
 	margin-right:5px;
 	white-space: nowrap;
 	cursor: pointer;
 }
 
-.table > .header > div:FIRST-CHILD {
-	max-width: 131px;
+.table > div.fullMode .header > div:FIRST-CHILD {
+	max-width: 183px;
 }
 
 seat .header > div {
 	max-width: 240px;
 }
 
-.table .header > div:FIRST-CHILD, .seat .header > div{
+.table div.fullMode .header > div:FIRST-CHILD, .seat .header > div,.table div.minMode div[title]{
 	float:left;
 	margin:0px;	
 	text-overflow: ellipsis;
@@ -48,18 +49,17 @@ seat .header > div {
 }
 
 
+.table div.minMode > div:FIRST-CHILD {
+	border-bottom:1px solid black;
+}
 
-.table .header > div > span {
+
+.table div.fullMode .header > div > span {
 	display:inline-block;
 }
 
-.table .header > div > span span.ui-icon-circle-plus {
-	display:inline-block;
-	white-space: nowrap;
-}
-
-.table .header > div > span:LAST-CHILD {
-	padding-right:4px
+div.fullMode {
+	display:none;
 }
 
 .table .seat{
@@ -84,7 +84,7 @@ seat .header > div {
 	width:16px;
 }
 
-.delete-user, .edit-user {
+.delete-user, .edit-user, .moreinfo {
 	float: right;
 }
 

@@ -18,17 +18,23 @@
 ***********************************************************************************/
  %>
 <div id="table_${t?.id}" class="table" table="${t?.id}" top="${t?.horzOffset?:''}" left="${t.verOffset ?: ''}">
-	<div class="header">
+	<div class="minMode">
+		<div><button id="fullMode_${t.id}" tableFullMode="true">Full Mode</button></div>
 		<div title="${t?.toString()}">${t?.toString()}</div>
-		<div>
-			<span class="ui-state-default ui-corner-all icon-only-holder edit-table" table="${t?.id}" title="Edit Table"><span class="ui-icon ui-icon-pencil"></span></span>
-			
-			<span class="ui-state-error ui-corner-all icon-only-holder" title="Delete Table" table="${t?.id}"><span class="ui-icon ui-icon-circle-minus"></span></span>
-			<span class="ui-state-default ui-corner-all seatAdder" title="Add Seat" table="${t?.id}"><span class="ui-icon ui-icon-circle-plus"></span><span>Add Seat</span></span>
-		</div>
 	</div>
-	<div class="clear"></div>
-	<g:each in="${t?.seats?.sort{a,b -> a.seatNumber < b.seatNumber ? 0 : 1 }}" var='s'>
-		<g:render template="seat" model="[s:s]"  />
-	</g:each>
+	<div class="fullMode">
+		<div class="header">
+			<div title="${t?.toString()}">${t?.toString()}</div>
+			<div>
+				<span class="ui-state-default ui-corner-all icon-only-holder edit-table" table="${t?.id}" title="Edit Table"><span class="ui-icon ui-icon-pencil"></span></span>
+				<span class="ui-state-error ui-corner-all icon-only-holder" title="Delete Table" table="${t?.id}"><span class="ui-icon ui-icon-circle-minus"></span></span>
+				<span class="ui-state-default ui-corner-all icon-only-holder" title="Compact Mode" table="${t?.id}"><span class="ui-icon ui-icon-circle-zoomout"></span></span>
+				<span class="ui-state-default ui-corner-all seatAdder" title="Add Seat" table="${t?.id}"><span class="ui-icon ui-icon-circle-plus"></span></span>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<g:each in="${seatList ?: (t?.seats?.sort{a,b -> a.seatNumber < b.seatNumber ? 0 : 1})}" var='s'>
+			<g:render template="seat" model="[s:s]"  />
+		</g:each>
+	</div>
 </div>

@@ -30,16 +30,18 @@ class ${className}Controller {
     }
 
     def create() {
-        [${propertyName}: new ${className}(params)]
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
+        [${propertyName}: new ${className}(params),'auth':auth]
     }
 	
     def save() {
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
         def ${propertyName} = new ${className}(params)
         if (!${propertyName}.save(flush: true)) {
 			if(${propertyName} instanceof String) {
 				${propertyName} = ${propertyName?.trim()}
 			}
-            render(view: "create", model: [${propertyName}: ${propertyName}])
+            render(view: "create", model: [${propertyName}: ${propertyName},'auth':auth])
             return
         }
 
@@ -59,6 +61,7 @@ class ${className}Controller {
     }
 
     def edit(Long id) {
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
         def ${propertyName} = ${className}.get(id)
         if (!${propertyName}) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
@@ -66,7 +69,7 @@ class ${className}Controller {
             return
         }
 
-        [${propertyName}: ${propertyName}]
+        [${propertyName}: ${propertyName}, 'auth':auth]
     }
 
     def update(Long id, Long version) {
@@ -76,13 +79,15 @@ class ${className}Controller {
             redirect(action: "list")
             return
         }
+		
+		ClientAuthentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (version != null) {
             if (${propertyName}.version > version) {<% def lowerCaseName = grails.util.GrailsNameUtils.getPropertyName(className) %>
                 ${propertyName}.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: '${domainClass.propertyName}.label', default: '${className}')] as Object[],
                           "Another user has updated this ${className} while you were editing")
-                render(view: "edit", model: [${propertyName}: ${propertyName}])
+                render(view: "edit", model: [${propertyName}: ${propertyName},'auth':auth])
                 return
             }
         }

@@ -14,18 +14,23 @@
  ***********************************************************************************/
 package com.muhlsoftware.wedding
 
+import pl.touk.excel.export.WebXlsxExporter
+
 class ExportService {
 
     def getGuestHeader() {
-		return ['First', 'Middle', 'Last', 'Address1', 'Address2', 'City', 'State', 'Zip', 'Phone', 'E-mail','isGuest','party']
+		return ['PreFix', 'First', 'Middle', 'Last', 'Address1', 'Address2', 'City', 'State', 'Zip', 'Phone', 'E-mail','isGuest','party']
     }
 	
 	def getGuestProperties(){
-		return ['firstName', 'middleName', 'lastName', 'address1', 'address2', 'city', 'state', 'zip', 'phone', 'guestEmail', new IsGuestGetter('isGuest'),new  PartyGetter('parties')]
+		return ['preFix','firstName', 'middleName', 'lastName', 'address1', 'address2', 'city', 'state', 'zip', 'phone', 'guestEmail', new IsGuestGetter('isGuest'),new  PartyGetter('parties')]
     }
 	
 	def exportGuestItems(response,guestArray){
-		new SheetNamedWebXlsxExporter().with {
+		
+		WebXlsxExporter webXlsxExporter = new WebXlsxExporter()
+		webXlsxExporter.setWorksheetName("guests")
+		webXlsxExporter.with {	
 			setResponseHeaders(response)
 			fillHeader(this.getGuestHeader())
 			add(guestArray, this.getGuestProperties())

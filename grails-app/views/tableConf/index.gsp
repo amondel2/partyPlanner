@@ -20,18 +20,54 @@
  %>
 <html>
 	<head>
+		<link  rel="stylesheet" href="${resource(dir: 'css', file: 'tableConf.css')}" type="text/css">
 		<meta name="layout" content="main"/>
 		<g:javascript src="tableConf.js"/>
-		<link  rel="stylesheet" href="${resource(dir: 'css', file: 'tableConf.css')}" type="text/css">
 		<title>Plan Your Party</title>
 	</head>
 <body>
 	<g:render template="../layouts/navMenu" />
 	<div id="guestListFiliters">
-		<input type="checkbox" id="fiterAttend" value="on"><label for="fiterAttend">&nbsp;Show Only Attending Guest</label>
-		<span id="sortList" class="ui-state-default ui-corner-all" title="Sort List"><span class="ui-icon ui-icon-arrowrefresh-1-e"></span><span>Refresh List</span></span>
-		<span>Invited Guest Count:<span id='invitedCount'></span></span>
-		<span>Attending Guest Count:<span id='attendingCount'></span></span>
+		<ul id="partyPlanMenu">
+			<li><a href="#">Action Buttons</a>
+				<ul>
+					<li>
+						<a href="#" id="addTable">Add a Table</a>
+					</li>
+					<li>
+						<a href="#" id="addGuest">Add a Guest</a>
+					</li>
+					<li>
+						<a href="#"  id="fiterAttend" attrib="off">Show Only Attending Guest</a>
+					</li>
+					<li>
+						<a href="#"  id="fiterResponded" attrib="off">Show Guest Who Have Not Responded</a>
+					</li>
+					<li>
+						<a href="#"  id="sortList">Refresh List</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#">Counts</a>
+				<ul>
+					<li><a href="#">Invited Guest Count:<span id='invitedCount'></span></a></li>
+					<li><a href="#">Attending Guest Count:<span id='attendingCount'></span></a></li>
+					<li><a href="#">Unique Address Count:<span id='uniqueCount'></span></a></li>
+					<li><a href="#">Guest Count:<span id='guestCount'></span></a></li>
+					<g:each in="${entrees}" var="entree">
+						<li><a href="#">${entree.entreeName} Count:<span cost='${entree.cost}' id='entree_${entree.id}'>0</span></a></li>
+					</g:each>
+				</uL>			
+			</li>
+			<li><a href="#">Money</a>
+				<ul>
+					<li><a href="#">Total Food Cost: $<span id="totalCost"></span></a></li>
+					<li><a href="#">Total Wedding Cost: $<span id='vendorTotalCost'></span></a></li>
+					<li><a href="#">Total Amount Paid: $<span id='vendorTotalPaid'></span></a></li>
+					<li><a href="#">Total Amount Owed: $<span id='vendorTotalOwed'></span></a></li>
+				</uL>			
+			</li>
+		</ul>
 	</div>
 	<div class="guestTableLayout" id="guestTableConfContainer">
 		<div id="guestList" >
@@ -53,6 +89,7 @@
 	<div id="dialogs">
 		<div id="addTableForm" title="Add a Table">
 			<input type="text" name="tableName" id="tableName" value="" required="required" placeholder="Enter a Name" />
+			<input type="number" min="1" step="1" pattern="\d+" name="seatTotal" id="seatTotal" value="" required="required" placeholder="Enter The Number of Seats" />
 		</div>
 		<div id="editTableForm" title="Edit a Table">
 			<input type="hidden" name="tableId" id="editDialTableId" value="">
