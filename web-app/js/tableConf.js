@@ -25,9 +25,6 @@ var seatDropable = {
     			data: {"seatId":seatId,'guestId':guestId},
     			complete: function() {
     				seatDropajax[seatId] = null;
-    			},
-    			error: function(){
-    				alert("failBoat")
     			}
     		});
         }
@@ -57,11 +54,20 @@ function getVendorCount(foodCost){
 		cache: false,
 		success: function(dataSub){
 			if(dataSub.status == "SUCCESS") {
-				var tc=parseFloat(dataSub.vendorCost) + foodCost;
-				var tp=tc - parseFloat(dataSub.vedorPaid);
-				$("#vendorTotalCost").text(tc);
-				$("#vendorTotalOwed").text(tp);
-				$("#vendorTotalPaid").text(parseFloat(dataSub.vedorPaid));
+				var tc,tp;
+				try{
+					tc = parseFloat(dataSub.vendorCost) + foodCost;
+				} catch (e) {
+					tc = foodCost;
+				}
+				try{
+					tp=tc - parseFloat(dataSub.vedorPaid);
+				} catch (e) {
+					tp = tc;
+				}
+				$("#vendorTotalCost").text(parseFloat(tc).toFixed(2));
+				$("#vendorTotalOwed").text(parseFloat(tp).toFixed(2));
+				$("#vendorTotalPaid").text(parseFloat(dataSub.vedorPaid).toFixed(2));
 			}	
 			
 		},
@@ -108,7 +114,7 @@ function quickCounts(){
 					$("#entree_" + entreeData.id).text(v[0]);
 					tc += parseInt(v[0]) * parseFloat(entreeData.cost);
 				});
-				$("#totalCost").text(tc);
+				$("#totalCost").text(parseFloat(tc).toFixed(2));
 				getVendorCount(tc);
 			}	
 			
@@ -121,9 +127,7 @@ function quickCounts(){
 	
 }
 
-
-
-var sortList = function(quickCounts){
+var sortList = function(doQuickCounts){
 	$.ajax({
 		url: baseDir + "/TableConf/getListSort",
 		type: 'GET',
@@ -138,7 +142,7 @@ var sortList = function(quickCounts){
 			} else if($("#fiterResponded").attr("attrib") == 'on') {
 				showNotResponded();
 			}
-			if(quickCounts) {
+			if(doQuickCounts) {
 				quickCounts();
 			}
 			$("#guestList").scrollTop(scrolTop);
@@ -181,10 +185,7 @@ var tableDrag = {
     			complete: function() {
     				tableDropajax[tableId] = null;
     			},
-    			data: {"tableId":tableId,"top":$(this).offset().top,"left":$(this).offset().left},
-    			error: function(){
-    				alert("failBoat")
-    			}
+    			data: {"tableId":tableId,"top":$(this).offset().top,"left":$(this).offset().left}
 			});
 		}
 		
@@ -272,7 +273,7 @@ $(document).ready(function(){
 			cache: false,
 			data: {"tableId":tableId},
 			success: function(data){
-				$("#table_" + tableId).append(data);
+				$("#table_" + tableId + " .fullMode").append(data);
 				$(".seat").droppable(seatDropable);
 			},
 			error: function(){
@@ -385,6 +386,7 @@ $(document).ready(function(){
 		$.ajax({
 			url: baseDir + "/partyGuest/create/",
 			type: 'GET',
+			data: {'partyId':$("#partyId").val()},
 			cache: true,
 			success: function(data){
 				if($("#addGuestDi").children().length > 0) {
@@ -463,7 +465,7 @@ $(document).ready(function(){
 						$("#tableDrop").dialog('close');
 					},
 					error: function(){
-						alert("failBoat")
+						alert("failBoat");
 					}
 				});
 		 	},
