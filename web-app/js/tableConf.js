@@ -508,7 +508,7 @@ $(document).ready(function(){
 						$("#guest_id_" + delGuestId).remove();
 						delGuestId = null
 						$("#guestDrop").dialog('close');
-						sortList(false);
+						sortList(true);
 					},
 					error: function(){
 						alert("failBoat")
