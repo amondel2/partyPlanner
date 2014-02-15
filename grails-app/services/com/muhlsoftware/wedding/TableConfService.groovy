@@ -33,15 +33,15 @@ class TableConfService {
 			isNull('seat')
 		}
 	}
-	
+
 	def getEntreeCount(partyId) {
 		def c = PartyGuest.createCriteria()
 		def a = c.list{
 			party{
 				eq('id',partyId)
-			} 
+			}
 			isNotNull('entree')
-			
+			eq('isAttending',true)
 			projections {
 				count "entree"
 				groupProperty "entree"
@@ -58,33 +58,38 @@ class TableConfService {
 			}
 			g.entree = null
 			params?.each{ p ->
-				def name = p.key
-				if (GrailsClassUtils.isPropertyOfType(PartyGuest, name,PartyEntree) ) {
-					def pe = null
-					try{ 
-						pe = PartyEntree.findById(params.entree?.id)
-					} catch (Exception e) {
-
-					}
-					if(pe) {
-						g.entree = pe
-					}			
-				} else if(g.hasProperty(name) && name != 'id' && name != 'version') {
-					def v =  p.value
-					if(GrailsClassUtils.isPropertyOfType(PartyGuest, name,Long)) {
-						v = Long.valueOf(v)
-					} else if ( GrailsClassUtils.isPropertyOfType(PartyGuest, name,Boolean) ) {
-						if(v == "on") {
-							v = true
-						}
-						v = Boolean.valueOf(v)
-					} 
-					g.putAt(name, v)
-				} 
+				g = savePartyGuestParam(p,g,params)
 			}
 			g.save(flush:true,,failOnError:true)
 		}
 		return g
+	}
+
+	def savePartyGuestParam(p,PartyGuest newPG,params) {
+		def name = p.key
+		if (GrailsClassUtils.isPropertyOfType(PartyGuest, name,PartyEntree) ) {
+			def pe = null
+			try{
+				pe = PartyEntree.findById(params.entree?.id)
+			} catch (Exception e) {
+
+			}
+			if(pe) {
+				newPG.entree = pe
+			}
+		} else if(newPG.hasProperty(name) && name != 'id' && name != 'version' && name != 'guest') {
+			def v =  p.value
+			if(GrailsClassUtils.isPropertyOfType(PartyGuest, name,Long)) {
+				v = Long.valueOf(v)
+			} else if ( GrailsClassUtils.isPropertyOfType(PartyGuest, name,Boolean) ) {
+				if(v == "on") {
+					v = true
+				}
+				v = Boolean.valueOf(v)
+			}
+			newPG.putAt(name, v)
+		}
+		return newPG
 	}
 
 	def savePartyGuest(params) {
@@ -105,20 +110,7 @@ class TableConfService {
 			newPG.putAt(p.name,false)
 		}
 		params?.each{ p ->
-			def name = p.key
-			if(newPG.hasProperty(name) && name != 'id' && name != 'version' && name != 'guest') {
-				def v =  p.value
-				if(GrailsClassUtils.isPropertyOfType(PartyGuest, name,Long)) {
-					v = Long.valueOf(v)
-				} else if ( GrailsClassUtils.isPropertyOfType(PartyGuest, name,Boolean) ) {
-					if(v == "on") {
-						v = true
-					}
-					v = Boolean.valueOf(v)
-				}
-
-				newPG.putAt(name, v)
-			}
+			newPG = savePartyGuestParam(p,newPG,params)
 		}
 		newPG.save(flush:true,,failOnError:true)
 		//associate this guest to the current party
