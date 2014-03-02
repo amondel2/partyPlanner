@@ -146,12 +146,19 @@ class TableConfService {
 		if(!g) {
 			return "No Party Guest Found"
 		}
+
 		PartyGuest.withTransaction { status ->
 			this.removeGuestFromSeat(guestId) //make sure they aren sitting somewhere else
-			s?.partyGuest = g
-			g?.seat = s
-			g?.save(flush: true,failOnError:true)
-			s?.save(flush: true,failOnError:true)
+			//make sure no body else is in that seat
+			if(PartyGuest?.findAllBySeat(s)?.size() > 0){
+				status.setRollbackOnly()
+				return "Already There"
+			} else {
+				s?.partyGuest = g
+				g?.seat = s
+				g?.save(flush: true,failOnError:true)
+				s?.save(flush: true,failOnError:true)
+			}
 		}
 		return "success"
 	}

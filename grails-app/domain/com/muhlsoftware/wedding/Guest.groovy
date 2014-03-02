@@ -63,6 +63,6 @@ class Guest implements Serializable {
 	
 	
 	String toString() {
-		return this.firstName + (this.middleName ? " " + this.middleName : '' ) + " " + this.lastName 	
+		return (this.preFix ? this.preFix + " " : '' ) + this.firstName + (this.middleName ? " " + this.middleName : '' ) + " " + this.lastName 	
 	}
 }

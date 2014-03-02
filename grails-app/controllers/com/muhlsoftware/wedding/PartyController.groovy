@@ -33,6 +33,11 @@ class PartyController {
 		exportService.exportGuestItems(response,guests)
 	}
 	
+	def exportGuestToExcelByTable() {
+		def tables = WedTable.findAllByParty(Party.findById(params?.id))
+		exportService.exportGuestByTable(response,tables)
+	}
+	
     def index() {
         redirect(action: "list", params: params)
     }
