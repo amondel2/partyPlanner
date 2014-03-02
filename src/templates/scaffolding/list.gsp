@@ -56,6 +56,7 @@
 					%>
 					<% if ( domainClass.propertyName == 'party') { %>
 						<td><a href="\${resource(file:'',dir:'party')}/exportGuestToExcel/\${${propertyName}.id}" target="_blank">Export To Excel</a></td>
+						<td><a href="\${resource(file:'',dir:'party')}/exportGuestToExcelByTable/\${${propertyName}.id}" target="_blank">Export Guests To Excel By Table</a></td>
 					<% }  %>
 					</tr>
 				</g:each>

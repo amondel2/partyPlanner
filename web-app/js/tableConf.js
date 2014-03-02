@@ -542,6 +542,8 @@ $(document).ready(function(){
 							if(data == "success") {
 								$("#table_" + tid +" .header:first > div:first").html(tn);
 								$("#table_" + tid +" .header:first > div:first").attr("title",tn);
+								$("#table_" + tid +" .minMode:first > div:last").html(tn);
+								$("#table_" + tid +" .minMode:first > div:last").attr("title",tn);
 							}
 							$("#editTableForm").dialog( "close" );
 						},

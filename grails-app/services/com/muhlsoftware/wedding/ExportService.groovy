@@ -37,4 +37,21 @@ class ExportService {
 			save(response.outputStream)
 		}
 	}
+	
+	def exportGuestByTable(response,tableArray){
+		def rowNum = 1
+		WebXlsxExporter webXlsxExporter = new WebXlsxExporter()
+		webXlsxExporter.setWorksheetName("table")
+		webXlsxExporter.with {	
+			setResponseHeaders(response)
+			tableArray.sort{it.name}.each{ WedTable tbl ->
+				fillRow([tbl.name], rowNum++)
+				tbl.seats.sort{it.seatNumber}.each{ Seat seat ->
+					fillRow([seat?.partyGuest?.guest?.toString()], rowNum++)
+				}
+				fillRow([""], rowNum++)
+			}
+			save(response.outputStream)
+		}
+	}
 }
