@@ -47,7 +47,7 @@ class ExportService {
 			tableArray.sort{it.name}.each{ WedTable tbl ->
 				fillRow([tbl.name], rowNum++)
 				tbl.seats.sort{it.seatNumber}.each{ Seat seat ->
-					fillRow([seat?.partyGuest?.guest?.toString()], rowNum++)
+					fillRow([seat?.partyGuest?.guest?.toString(),seat?.partyGuest?.entree?.toString()?.trim()], rowNum++)
 				}
 				fillRow([""], rowNum++)
 			}
