@@ -33,6 +33,23 @@ class TableConfService {
 			isNull('seat')
 		}
 	}
+	
+	def getGiftListForParty(partyId) {
+		def c = PartyGuest.createCriteria()
+		def a = c.list{
+			party{
+				eq('id',partyId)
+			}
+			guest{
+				order('lastName','asc')
+				order('firstName','asc')
+				order('middleName','asc')
+			}
+			isNotNull('gift')
+			ne('gift','')
+		}
+		return a
+	}
 
 	def getEntreeCount(partyId) {
 		def c = PartyGuest.createCriteria()

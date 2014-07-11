@@ -21,6 +21,7 @@ var seatDropable = {
         	seatDropajax[seatId] = $.ajax({
     			url: baseDir + "/TableConf/sitDown",
     			type: 'POST',
+    			async: false,
     			cache: false,
     			data: {"seatId":seatId,'guestId':guestId},
     			complete: function() {
@@ -176,6 +177,7 @@ var tableDrag = {
 				url: baseDir + "/TableConf/tableDrop",
     			type: 'POST',
     			cache: false,
+    			async: false,
     			complete: function() {
     				tableDropajax[tableId] = null;
     			},
@@ -207,6 +209,7 @@ var guestDrag= {
 	    			url: baseDir + "/TableConf/standUp",
 	    			type: 'POST',
 	    			cache: false,
+	    			async: false,
 	    			data: {'guestId':guestId},
 	    			success: function() {
 	    				elm.remove();
@@ -445,6 +448,7 @@ $(document).ready(function(){
 		 "Ok": function() {
 			 $.ajax({
 				 	cache: false,
+				 	async: false,
 					url: baseDir + "/TableConf/delTable",
 					type: 'POST',
 					data: {"tableId":delTableId},
@@ -476,6 +480,7 @@ $(document).ready(function(){
 					url: baseDir + "/TableConf/delSeat",
 					type: 'POST',
 					cache: false,
+					async: false,
 					data: {"seatId":delSeatId},
 					success: function(data){
 						$("#seat_" + delSeatId).remove();
@@ -505,6 +510,7 @@ $(document).ready(function(){
 					url: baseDir + "/TableConf/delGuest",
 					type: 'POST',
 					cache: false,
+					async: false,
 					data: {"guestId":delGuestId},
 					success: function(data){
 						$("#guest_id_" + delGuestId).remove();
@@ -584,6 +590,7 @@ $(document).ready(function(){
 			 if(tn && tn.length > 0 && seatnumber > 0) {
 			 $.ajax({
 				 	cache: false,
+				 	async: false,
 					url: baseDir + "/TableConf/addTable",
 					type: 'POST',
 					data: {"tableName":tn,"seatTotal":seatnumber},

@@ -23,6 +23,7 @@ import grails.plugins.springsecurity.Secured
 class TableConfController {
 
 	def tableConfService
+	def exportService
 
 	def index() {
 		def partyId = Long.valueOf(params?.id)
@@ -75,6 +76,15 @@ class TableConfController {
 		}
 		render msg as JSON
 		
+	}
+	
+	def giftExport() {
+		try{
+			def partyGuestList = tableConfService.getGiftListForParty(Long.valueOf(session['partyId']))
+			exportService.exportGiftList(response,partyGuestList)
+		} catch(Exception e) {
+			render( ['status': 'FAILURE', "msg": "Error: " + e.getMessage()] as JSON)
+		}
 	}
 	
 	def getEntreeCount() {
