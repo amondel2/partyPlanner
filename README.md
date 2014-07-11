@@ -29,10 +29,10 @@ This Tool is easy to use or at least thats the point.
     
 2. TO complie and run just run
 
-    a.  This tool is currently running against grail 2.3.5 and jquery 2.0.3 so no support for crappy old ie.
+    a.  This tool is currently running against grail 2.3.7 and jquery 2.0.3 so no support for crappy old ie.
     
     b. Configure your Datasource or external groovy config file with the ENV var or partyconfig.  I
 
-    c. run grails run-app or grails war (see http://grails.org/doc/2.3.5/ref/Command%20Line/war.html)
+    c. run grails run-app or grails war (see http://grails.org/doc/2.3.7/ref/Command%20Line/war.html)
    
 
