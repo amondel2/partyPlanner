@@ -46,6 +46,9 @@
 					<li>
 						<a href="#"  id="sortList">Refresh List</a>
 					</li>
+					<li>
+						<a href="${createLink(uri: '/tableConf/giftExport')}" target="export"  id="exportGiftList">Export Gift List</a>
+					</li>
 				</ul>
 			</li>
 			<li><a href="#">Counts</a>

@@ -38,6 +38,22 @@ class ExportService {
 		}
 	}
 	
+	def exportGiftList(response,partyGiftList) {
+		def rowNum = 2
+		WebXlsxExporter webXlsxExporter = new WebXlsxExporter()
+		webXlsxExporter.setWorksheetName("gifts")
+		webXlsxExporter.with {
+			setResponseHeaders(response)
+			fillHeader(['First','Last', 'Address1', 'Address2', 'City', 'State', 'Zip','Gift'])
+			partyGiftList.each { PartyGuest pg ->
+				Guest guest = pg.guest
+				fillRow([guest?.firstName,guest?.lastName,guest?.address1,guest?.address2,guest?.city,guest?.state,guest?.zip,pg?.gift], rowNum++)
+				
+			}
+			save(response.outputStream)
+		}
+	}
+	
 	def exportGuestByTable(response,tableArray){
 		def rowNum = 1
 		WebXlsxExporter webXlsxExporter = new WebXlsxExporter()
