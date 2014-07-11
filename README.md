@@ -8,7 +8,7 @@ I made so major changes in the 2.0 release to support multiple parties..the firs
 
 This Tool is easy to use or at least thats the point.
 
-1. Gettiong Guest Into the system 
+1. Gettiong Guest Into the system
 
     a. Ussing Excel
     
